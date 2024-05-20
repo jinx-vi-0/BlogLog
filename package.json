@@ -1,19 +1,19 @@
 {
   "name": "BlogLog",
   "version": "1.0.0",
-  "description": "",
+  "description": "A blogging platform built with Node.js and Express",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "app.js",
+    "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["blog", "node.js", "express", "mongodb"],
+  "author": "Your Name",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "connect-mongo": "^5.0.0",
+    "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
