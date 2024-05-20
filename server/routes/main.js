@@ -132,49 +132,49 @@ router.get('/about', (req, res) => {
 // function insertPostData() {
 //   Post.insertMany([
 //     {
-//       title: "Advanced Techniques in React Development",
-//       body: "Explore advanced techniques such as state management with Redux, performance optimization, and server-side rendering in React applications."
+//       title: "Understanding the Basics of HTML and CSS",
+//       body: "HTML (HyperText Markup Language) and CSS (Cascading Style Sheets) are the fundamental technologies for building web pages. HTML provides the structure of the page, while CSS is used to control the presentation, formatting, and layout. This blog post will guide you through the essential concepts and elements of HTML and CSS, providing examples and best practices for creating well-structured and visually appealing web pages."
 //     },
 //     {
-//       title: "Building Scalable Web Applications with Python Flask",
-//       body: "Learn how to architect and deploy scalable web applications using the Python Flask framework, including best practices for database management and RESTful API design."
+//       title: "An Introduction to JavaScript for Beginners",
+//       body: "JavaScript is a versatile programming language that allows you to create dynamic and interactive web content. This post will cover the basics of JavaScript, including variables, data types, functions, and control structures. You'll learn how to add interactivity to your web pages and understand how JavaScript interacts with HTML and CSS to enhance user experiences."
 //     },
 //     {
-//       title: "Introduction to Machine Learning with Python",
-//       body: "Get started with machine learning using Python and popular libraries like scikit-learn and TensorFlow. Learn about supervised and unsupervised learning algorithms."
+//       title: "Building Responsive Web Designs with CSS Grid and Flexbox",
+//       body: "Responsive web design ensures that your website looks great on all devices, from desktops to mobile phones. CSS Grid and Flexbox are powerful layout modules that help you create flexible and responsive designs. In this blog, we'll explore the concepts and practical implementations of CSS Grid and Flexbox, with code examples and tips for creating responsive layouts."
 //     },
 //     {
-//       title: "Responsive Web Design Principles",
-//       body: "Understand the principles of responsive web design, including flexible grids, media queries, and fluid layouts, to create websites that adapt to various screen sizes and devices."
+//       title: "Getting Started with React: A JavaScript Library for Building User Interfaces",
+//       body: "React is a popular JavaScript library developed by Facebook for building user interfaces. It allows developers to create large web applications that can update and render efficiently in response to data changes. This post will introduce you to the core concepts of React, including components, JSX, state, and props, and guide you through setting up a basic React application."
 //     },
 //     {
-//       title: "Securing Web Applications with JWT Authentication",
-//       body: "Learn how to implement JSON Web Token (JWT) authentication to secure your web applications, including user authentication, token generation, and validation."
+//       title: "Understanding RESTful APIs and How to Integrate Them into Your Web Applications",
+//       body: "RESTful APIs (Application Programming Interfaces) are a set of rules and conventions for building and interacting with web services. They allow different software systems to communicate with each other. This blog post will explain what RESTful APIs are, how they work, and how to integrate them into your web applications using JavaScript and AJAX."
 //     },
 //     {
-//       title: "Exploring Data Visualization with D3.js",
-//       body: "Dive into data visualization techniques using D3.js, a powerful JavaScript library. Create interactive and dynamic visualizations to present data in a meaningful way."
+//       title: "A Guide to Modern JavaScript Frameworks: Angular, Vue, and Svelte",
+//       body: "Modern JavaScript frameworks like Angular, Vue, and Svelte have revolutionized web development by providing robust tools for building complex applications. This post will compare these three frameworks, discussing their unique features, strengths, and use cases. By the end of this guide, you'll have a better understanding of which framework might be the best fit for your next project."
 //     },
 //     {
-//       title: "Optimizing Frontend Performance with Webpack",
-//       body: "Discover how to optimize frontend performance using Webpack, a module bundler for JavaScript applications. Learn about code splitting, lazy loading, and tree shaking."
+//       title: "Enhancing Web Performance with Lazy Loading and Code Splitting",
+//       body: "Web performance is crucial for user experience and SEO. Lazy loading and code splitting are techniques that can significantly improve the load times of your web pages. This blog will explain how lazy loading defers the loading of non-critical resources and how code splitting breaks down your code into smaller bundles. Examples and implementation strategies will be provided to help you optimize your web performance."
 //     },
 //     {
-//       title: "GraphQL Fundamentals: Building APIs with GraphQL",
-//       body: "Learn the fundamentals of GraphQL and how to build APIs using GraphQL schemas, queries, mutations, and subscriptions. Compare GraphQL with RESTful APIs."
+//       title: "Mastering Git and GitHub for Version Control",
+//       body: "Git is a distributed version control system that helps developers track changes in their code. GitHub is a platform for hosting Git repositories. This post will cover the basics of Git and GitHub, including how to create repositories, commit changes, branch, merge, and collaborate with others. Understanding these tools is essential for modern web development and team collaboration."
 //     },
 //     {
-//       title: "Exploring DevOps Practices for Continuous Integration and Deployment",
-//       body: "Explore DevOps practices such as continuous integration (CI) and continuous deployment (CD) to automate software delivery pipelines and improve collaboration between development and operations teams."
+//       title: "Implementing Authentication in Web Applications with JWT",
+//       body: "JSON Web Tokens (JWT) are a compact and secure way to transmit information between parties as a JSON object. They are commonly used for authentication and authorization in web applications. This blog post will guide you through the process of implementing JWT authentication in a web application, including generating tokens, securing endpoints, and managing user sessions."
 //     },
 //     {
-//       title: "Introduction to Docker Containers and Container Orchestration",
-//       body: "Get an introduction to Docker containers and container orchestration tools like Kubernetes. Learn how to containerize applications for easier deployment and management."
+//       title: "Exploring the Power of CSS Preprocessors: Sass and LESS",
+//       body: "CSS preprocessors like Sass and LESS extend the capabilities of standard CSS by adding features like variables, nesting, and mixins. This post will introduce you to Sass and LESS, showing you how to install and use them to write more efficient and maintainable CSS code. Examples and practical tips will help you get started with these powerful tools."
 //     }
-//   ]);
+//   ])
 // }
 
-// Call the function to insert 10 posts
+// // Call the function to insert 10 posts
 // insertPostData();
 
 
