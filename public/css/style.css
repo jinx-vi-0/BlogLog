@@ -83,15 +83,20 @@ img {
 
 
 /* Main Header */
+
 .header {
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   grid-template-areas: 
-  "logo button"
-  "menu menu";
-  padding-top: 10px;
+    "logo button"
+    "menu menu";
+  padding: 15px 20px;
+  background-color: #f8f9fa; /* Light background */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 8px; /* Slight rounded corners */
+  font-family: 'Arial', sans-serif; /* Clean font choice */
 }
 
 @media only screen and (min-width: 768px) {
@@ -102,21 +107,38 @@ img {
   }
 }
 
+/* Stylish Logo */
 .header__logo {
-  font-weight: 800;
-  font-size: 25px;
+  font-weight: 900; /* Bold font for prominence */
+  font-size: 28px; /* Slightly larger font size */
+  font-family: 'Poppins', sans-serif; /* Stylish, modern font */
   text-decoration: none;
   grid-area: logo;
+  color: #2A2A2A; /* Dark but subtle color */
+  background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient effect */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* Fill gradient only to text */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+  margin-right: 10px;
 }
 
+/* Hover Effect for Logo */
 .header__logo:hover {
-  text-decoration: underline;
+  text-decoration: none; /* Remove default underline */
+  background: linear-gradient(45deg, #feb47b, #ff7e5f); /* Reverse gradient on hover */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px; /* Add a slight spacing for an expanded look */
+  transform: scale(1.05); /* Slight zoom-in effect */
 }
 
 .header__nav {
   justify-content: center;
   display: flex;
   grid-area: menu;
+  background-color: #f8f8f8; /* Light background for the nav */
+  padding: 10px 0; /* Add padding for a better layout */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .header__logo, .header__nav, .header__button {
@@ -134,17 +156,20 @@ img {
   gap: 0.3rem;
   align-items: center;
   border: 0;
-  padding: 6px 12px;
-  background: none;
+  padding: 8px 16px; /* Slightly larger padding for buttons */
+  background: var(--light-gray); /* Background color for buttons */
   border-radius: 10px;
   border: 2px solid transparent;
   font-size: 1rem;
   font-weight: 600;
   color: var(--black);
+  transition: background 0.3s, color 0.3s; /* Smooth transition effects */
 }
 
 .header__button button:hover {
   border: 2px solid var(--black);
+  background: var(--black); /* Change background on hover */
+  color: #fff; /* Change text color on hover */
 }
 
 /* Header -> Navigation */
@@ -159,15 +184,22 @@ img {
 .header__nav ul a {
   padding: 10px;
   text-decoration: none;
+  border-radius: 5px; /* Slight rounding of links */
+  transition: background 0.3s, color 0.3s; /* Smooth transition effects */
 }
 
 .header__nav ul a.active {
-  color: #7E7E7E;
+  color: #7E7E7E; /* Color for active link */
+  font-weight: bold; /* Bold active link for emphasis */
 }
 
 .header__nav ul a:hover {
   text-decoration: underline;
+  background: var(--light-gray); /* Background change on hover */
+  color: var(--black); /* Text color on hover */
 }
+
+
 
 /* Author - HomePage */
 .author {
@@ -338,3 +370,16 @@ img {
 .pagination:hover {
   color: var(--black);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
