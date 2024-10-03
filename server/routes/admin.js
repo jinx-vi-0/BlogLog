@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
-
+const {z} = require('zod');
 
 /**
  * 
@@ -223,7 +223,18 @@ router.put('/edit-post/:id', authMiddleware, async (req, res) => {
 router.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    const adminValidationSchema=z.object({
+      username: z.string().min(3).max(30),
+      password:z.string().min(6).max(25).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character")
+  })
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    const parseData= adminValidationSchema.safeParse(req.body);
+    if(!parseData.success){
+        res.status(403).json(parseData.error);
+        return
+    }
 
     try {
       const user = await User.create({ username, password:hashedPassword });
