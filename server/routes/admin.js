@@ -225,8 +225,8 @@ router.post('/register', async (req, res) => {
     const { username, password } = req.body;
 
     const adminValidationSchema=z.object({
-      username: z.string().min(3).max(30),
-      password:z.string().min(6).max(25).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character")
+      username: z.string().min(6).max(20),
+      password:z.string().min(6).max(20).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character")
   })
     const hashedPassword = await bcrypt.hash(password, 10);
 
