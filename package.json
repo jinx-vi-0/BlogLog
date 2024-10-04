@@ -8,7 +8,12 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "keywords": ["blog", "node.js", "express", "mongodb"],
+  "keywords": [
+    "blog",
+    "node.js",
+    "express",
+    "mongodb"
+  ],
   "author": "Your Name",
   "license": "ISC",
   "dependencies": {
@@ -23,7 +28,8 @@
     "jsonwebtoken": "^9.0.0",
     "method-override": "^3.0.0",
     "mongodb": "^6.6.2",
-    "mongoose": "^7.0.3"
+    "mongoose": "^7.0.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
