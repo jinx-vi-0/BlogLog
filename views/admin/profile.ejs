@@ -1,0 +1,17 @@
+<header>
+    <h1><%= locals.title %></h1>
+    <p>Username: <strong><%= user.username %></strong></p>
+</header>
+
+<h2>Posts:</h2>
+<% if (user.posts.length > 0) { %>
+    <ul>
+        <% user.posts.forEach(post => { %>
+            <li>
+                <a href="/post/<%= post._id %>"><%= post.title %></a> 
+            </li>
+        <% }); %>
+    </ul>
+<% } else { %>
+    <p>No posts found for this user.</p>
+<% } %>

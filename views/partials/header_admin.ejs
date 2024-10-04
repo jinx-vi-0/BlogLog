@@ -4,22 +4,18 @@
   <nav class="header__nav">
     <ul>
       <li>
-        <a href="/" class="">Home</a>
+        <a href="/dashboard" class="">Dashboard</a>
       </li>
       <li>
-        <a href="/about" class="">About</a>
+        <a href="/users">Users</a>
       </li>
       <li>
-        <a href="/contact" class="">Contact</a>
+        <a href="/profile/<%= locals.userId %>">Profile</a>
       </li>
     </ul>
-
   </nav>
 
   <div class="header__button">
-    <a href="/logout">
-      Logout
-    </a>
+    <a href="/logout">Logout</a>
   </div>
-
 </header>

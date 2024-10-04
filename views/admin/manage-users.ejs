@@ -1,0 +1,27 @@
+<h1>
+    <%= locals.title %>
+</h1>
+<p>
+    <%= locals.description %>
+</p>
+
+<h2>Users</h2>
+<div class="userBoxConatiner">
+    <% users.forEach(user=> { %>
+        <div class="userBoxes">
+            <h3>
+                <%= user.username %>
+                <%= user.email %>
+            </h3>
+            <button class="btn-delete">Delete</button>
+        </div>
+        <% }); %>
+
+</div>
+
+<h2>Create New User</h2>
+<form action="/register" method="POST">
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit" class="submitBtn">Create User</button>
+</form>
