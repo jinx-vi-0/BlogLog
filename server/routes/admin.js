@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
+const {z} = require('zod');
 
 /**
  * Middleware to check authentication
@@ -206,8 +207,12 @@ router.put('/edit-post/:id', authMiddleware, async (req, res) => {
 router.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
 
+    const adminValidationSchema=z.object({
+      username: z.string().min(6).max(20),
+      password:z.string().min(6).max(20).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character")
+  })
+    const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({ username, password: hashedPassword });
     res.redirect('/users'); // Adjust to redirect correctly after registration
   } catch (error) {
@@ -216,6 +221,20 @@ router.post('/register', async (req, res) => {
       res.status(409).json({ message: 'User already in use' });
     } else {
       res.status(500).json({ message: 'Internal server error' });
+    const parseData= adminValidationSchema.safeParse(req.body);
+    if(!parseData.success){
+        res.status(403).json(parseData.error);
+        return
+    }
+
+    try {
+      const user = await User.create({ username, password:hashedPassword });
+      res.status(201).json({ message: 'User Created', user });
+    } catch (error) {
+      if(error.code === 11000) {
+        res.status(409).json({ message: 'User already in use'});
+      }
+      res.status(500).json({ message: 'Internal server error'})
     }
   }
 });

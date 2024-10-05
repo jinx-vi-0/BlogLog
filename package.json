@@ -28,7 +28,8 @@
     "jsonwebtoken": "^9.0.0",
     "method-override": "^3.0.0",
     "mongodb": "^6.6.2",
-    "mongoose": "^7.0.3"
+    "mongoose": "^7.0.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
