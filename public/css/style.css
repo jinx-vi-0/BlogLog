@@ -348,3 +348,61 @@ img {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+
+/* About us page  */
+.welcome-section {
+  background-color: #f9f9f9;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: auto;
+}
+
+.welcome-section h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.welcome-section p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.features-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.features-list li {
+  background: #e0f7fa;
+  border-left: 5px solid #00796b;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  transition: background 0.3s;
+}
+
+.features-list li:hover {
+  background: #b2ebf2;
+}
+
+.welcome-section a.cta-button {
+  display: inline-block;
+  background-color: #00796b;
+  color: white;
+  padding: 15px 30px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  margin: 20px auto;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.welcome-section a.cta-button:hover {
+  background-color: #004d40;
+}
