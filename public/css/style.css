@@ -41,7 +41,7 @@ textarea {
   margin-bottom: 1rem;
 }
 
-.btn {
+.btn, .submitBtn {
   background-color: var(--black);
   border: none;
   color: white; 
@@ -49,11 +49,16 @@ textarea {
   text-decoration: none;
   margin: 4px 2px; 
   cursor: pointer;
+  border-radius: 9px;
+  border: none;
 }
 
 .btn-delete {
   padding: 10px 16px;
-  background-color: var(--red);
+  background-color: #b45555;
+  color: white;
+  border-radius: 9px;
+  border: none;
 }
 
 
@@ -339,6 +344,10 @@ img {
   color: var(--black);
 }
 
+.userBoxConatiner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 
 /* About us page  */
 .welcome-section {
