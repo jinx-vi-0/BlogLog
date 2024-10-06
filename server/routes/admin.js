@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
-const {z} = require('zod');
+const { z } = require('zod');
 
 /**
  * Middleware to check authentication
@@ -116,7 +116,7 @@ router.get('/add-post', authMiddleware, async (req, res) => {
       userId
     };
 
-     // Get the userId
+    // Get the userId
 
     res.render('admin/add-post', {
       locals,
@@ -204,38 +204,39 @@ router.put('/edit-post/:id', authMiddleware, async (req, res) => {
  * POST /register
  * Admin - Register
  */
+const adminValidationSchema = z.object({
+  username: z.string().min(6).max(20),
+  password: z.string()
+    .min(8)
+    .max(20)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/,
+      "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character")
+});
+
 router.post('/register', async (req, res) => {
   try {
-    const { username, password } = req.body;
-
-    const adminValidationSchema=z.object({
-      username: z.string().min(6).max(20),
-      password:z.string().min(6).max(20).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character")
-  })
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ username, password: hashedPassword });
-    res.redirect('/users'); // Adjust to redirect correctly after registration
-  } catch (error) {
-    console.error(error);
-    if (error.code === 11000) {
-      res.status(409).json({ message: 'User already in use' });
-    } else {
-      res.status(500).json({ message: 'Internal server error' });
-    const parseData= adminValidationSchema.safeParse(req.body);
-    if(!parseData.success){
-        res.status(403).json(parseData.error);
-        return
+    const parseData = adminValidationSchema.safeParse(req.body);
+    if (!parseData.success) {
+      return res.status(403).json(parseData.error);
     }
+
+    const { username, password } = parseData.data;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
-      const user = await User.create({ username, password:hashedPassword });
+      const user = await User.create({ username, password: hashedPassword });
       res.status(201).json({ message: 'User Created', user });
     } catch (error) {
-      if(error.code === 11000) {
-        res.status(409).json({ message: 'User already in use'});
+      if (error.code === 11000) {
+        res.status(409).json({ message: 'User already in use' });
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
       }
-      res.status(500).json({ message: 'Internal server error'})
     }
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -263,7 +264,7 @@ router.get('/users', authMiddleware, async (req, res) => {
   }
 });
 
-router.get('/profile/:id', authMiddleware,async (req, res) => {
+router.get('/profile/:id', authMiddleware, async (req, res) => {
   try {
     const userId = req.params.id;
 
@@ -279,7 +280,7 @@ router.get('/profile/:id', authMiddleware,async (req, res) => {
       description: "User profile showing all posts.",
     };
 
-    res.render('admin/profile', { 
+    res.render('admin/profile', {
       locals,
       user,
     });
