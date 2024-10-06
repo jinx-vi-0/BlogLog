@@ -18,6 +18,14 @@
 - **Responsive design** for a seamless experience on any device.
 - **User-friendly interface** for easy navigation and interaction.
 
+
+## Getting Started
+ - Follow these steps to get BlogLog running on your local machine.
+
+**Prerequisites**
+ - Node.js 
+ - MongoDB 
+
 ## Installation
 
 1. **Clone the repository:**
