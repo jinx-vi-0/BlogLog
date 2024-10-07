@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 const Schema = mongoose.Schema;
+
 const PostSchema = new Schema({
   title: {
     type: String,
@@ -10,14 +11,20 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  views:{
+    type:Number,
+    default:0
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now
+  isPublished:{
+    type:Boolean,
+    default:true
+  },
+  owner:{
+    type:Schema.Types.ObjectId,
+    ref:"User",
+    required:[true,"Owner of the post is required "]
   }
-});
+},{timestamps:true});
 
+PostSchema.plugin(mongooseAggregatePaginate);
 module.exports = mongoose.model('Post', PostSchema);
