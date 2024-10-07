@@ -18,6 +18,13 @@ const PostSchema = new Schema({
   isPublished:{
     type:Boolean,
     default:true
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
   },
   owner:{
     type:Schema.Types.ObjectId,

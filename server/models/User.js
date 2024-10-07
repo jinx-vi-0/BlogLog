@@ -45,6 +45,12 @@ const UserSchema=new Schema({
   refreshToken:{
     type:String
   }
+  password: {
+    type: String,
+    required: true,
+  },
+  posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }] // Array of Post references
+});
 
 },{timestamps:true});
 
