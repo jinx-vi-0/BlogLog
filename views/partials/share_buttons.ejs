@@ -1,0 +1,34 @@
+<div class="share-buttons">
+    <!-- Facebook Share Button -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(currentUrl) %>" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="share-button facebook">
+      <img src="/img/facebook.svg" alt="Share on Facebook" />
+    </a>
+  
+    <!-- Twitter Share Button -->
+    <a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(locals.title) %>&url=<%= encodeURIComponent(currentUrl) %>" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="share-button twitter">
+      <img src="/img/twitter.svg" alt="Share on Twitter" />
+    </a>
+  
+    <!-- LinkedIn Share Button -->
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=<%= encodeURIComponent(currentUrl) %>&title=<%= encodeURIComponent(locals.title) %>" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="share-button linkedin">
+      <img src="/img/linkedin.svg" alt="Share on LinkedIn" />
+    </a>
+  
+    <!-- WhatsApp Share Button -->
+    <a href="https://api.whatsapp.com/send?text=<%= encodeURIComponent(locals.title + ' ' + currentUrl) %>" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="share-button whatsapp">
+      <img src="/img/whatsapp.svg" alt="Share on WhatsApp" />
+    </a>
+  </div>
+  
