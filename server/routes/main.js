@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
-const User = require('../models/User');
 
 /**
  * GET /
@@ -64,36 +63,25 @@ router.get('', async (req, res) => {
 */
 router.get('/post/:id', async (req, res) => {
   try {
-    const slug = req.params.id;
+    let slug = req.params.id;
 
-    // Fetch the post by its ID and populate the user field to get username
-    const data = await Post.findById(slug).populate('user', 'username');
-
-    if (!data) {
-      return res.status(404).json({ message: 'Post not found' });
-    }
+    const data = await Post.findById({ _id: slug });
 
     const locals = {
       title: data.title,
       description: "Simple Blog created with NodeJs, Express & MongoDb.",
-    };
-
-    // The author's username can be accessed directly from the populated data
-    const authorName = data.user.username; // Get the author's username
+    }
 
     res.render('post', { 
       locals,
       data,
-      authorName, 
       currentRoute: `/post/${slug}`
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Internal Server Error' });
   }
+
 });
-
-
 
 
 /**
@@ -120,7 +108,7 @@ router.post('/search', async (req, res) => {
     res.render("search", {
       data,
       locals,
-      currentRoute: '/search'
+      currentRoute: '/'
     });
 
   } catch (error) {
