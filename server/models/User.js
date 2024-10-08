@@ -10,8 +10,7 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true,
-  },
-  posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }] // Array of Post references
+  }
 });
 
 module.exports = mongoose.model('User', UserSchema);
