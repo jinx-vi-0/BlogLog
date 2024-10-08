@@ -406,28 +406,3 @@ img {
 .welcome-section a.cta-button:hover {
   background-color: #004d40;
 }
-
-.share-buttons {
-  display: flex;
-  gap: 10px; /* Space between buttons */
-  margin-top: 20px; /* Space above the buttons */
-}
-
-.share-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 12px; 
-  background-color: #f0f0f0; 
-  border: none; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  text-decoration: none; 
-  color: #333; 
-  transition: background-color 0.3s; 
-}
-
-.share-button:hover {
-  background-color: #e0e0e0; 
-}
-
