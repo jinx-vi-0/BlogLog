@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
+const ContactMessage = require('../models/contactMessage');
 
 /**
  * GET /
@@ -128,6 +129,37 @@ router.get('/about', (req, res) => {
   });
 });
 
+/**
+ * GET /
+ * Contact
+*/
+router.get('/contact', (req, res) => {
+  res.render('contact', {
+    currentRoute: '/contact'
+  });
+});
+
+router.post('/send-message', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    // Create a new contact message
+    const newMessage = new ContactMessage({ name, email, message });
+    await newMessage.save();
+
+    // Render the contact page with a success message
+    res.render('contact', {
+      currentRoute: '/contact',
+      message: 'Thank you for reaching out! We will get back to you soon.',
+    });
+  } catch (error) {
+    console.error(error);
+    res.render('contact', {
+      currentRoute: '/contact',
+      message: 'There was an error sending your message. Please try again later.',
+    });
+  }
+});
 
 // function insertPostData() {
 //   Post.insertMany([
