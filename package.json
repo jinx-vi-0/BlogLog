@@ -29,6 +29,7 @@
     "method-override": "^3.0.0",
     "mongodb": "^6.6.2",
     "mongoose": "^7.0.3",
+    "nodemailer": "^6.9.15",
     "zod": "^3.23.8"
   },
   "devDependencies": {

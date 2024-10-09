@@ -398,8 +398,7 @@ img {
   background-color: #004d40;
 }
 
-/* Contact us page */
-/* Contact Section Styling */
+/* Contact Us Page Styling */
 .contact-section {
   width: 100%;
   padding: 2rem 0;
@@ -420,7 +419,7 @@ img {
 .contact-container h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #667eea;
+  color: #333;
   text-align: center;
 }
 
@@ -428,6 +427,7 @@ img {
   font-size: 1rem;
   margin-bottom: 2rem;
   text-align: center;
+  color: #444;
 }
 
 .form-group {
@@ -456,20 +456,20 @@ img {
 .btn-submit {
   display: inline-block;
   padding: 0.8rem 1.5rem;
-  background: #667eea;
-  color: #fff;
+  background: #ccc;
+  color: #333;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .btn-submit:hover {
-  background: #764ba2;
+  background: #bbb;
+  color: #000;
 }
 
-/* Message Styling */
 .message {
   background-color: #d4edda;
   color: #155724;
