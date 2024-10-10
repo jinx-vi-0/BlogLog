@@ -6,7 +6,10 @@
   <input type="text" placeholder="Enter Username" name="username">
 
   <label for="password"><b>Password</b></label>
-  <input type="password" placeholder="Enter Password" name="password">
+  <div style="display: flex; flex-direction: row; gap: 2px;">
+    <input id="password" type="password" placeholder="Enter Password" name="password">
+    <a type="button" id="togglepasswordView" style="position: absolute; right: 10rem; padding-top: 2px; cursor: pointer;">👁️</a>
+  </div>
 
   <input type="submit" value="Login" class="btn">
 
@@ -24,3 +27,16 @@
   <input type="submit" value="Register" class="btn">
 
 </form> -->
+
+<script>
+  const setPasswordButton = document.getElementById('togglepasswordView');
+  const passwordfeild = document.getElementById('password');
+  setPasswordButton.addEventListener('click', ()=>{
+    console.log("clicked 🔑")
+    const type = passwordfeild.getAttribute('type') === 'password' ? 'text' : 'password'
+    passwordfeild.setAttribute("type", type)
+
+    setPasswordButton.textContent = type === 'text' ? '🙈' : '👁️'
+
+  })
+</script>
