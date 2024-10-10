@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
-
+const ContactMessage = require('../models/contactMessage');
+const transporter = require('../config/nodemailerConfig');
 /**
  * GET /
  * HOME
@@ -128,6 +129,56 @@ router.get('/about', (req, res) => {
   });
 });
 
+/**
+ * GET /
+ * Contact
+*/
+router.get('/contact', (req, res) => {
+  res.render('contact', {
+    currentRoute: '/contact'
+  });
+});
+
+router.post('/send-message', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    // Create a new contact message
+    const newMessage = new ContactMessage({ name, email, message });
+    await newMessage.save();
+
+     // Send an email notification
+     const mailOptions = {
+      from: `"BlogLog Contact Form" <${email}>`, 
+      to: process.env.EMAIL_USERNAME, 
+      subject: `New Contact Message from ${name} - BlogLog`, 
+      html: `
+        <div style="font-family: Arial, sans-serif; margin: 20px; padding: 20px; border: 1px solid #eaeaea; border-radius: 5px; background-color: #f9f9f9;">
+          <h2 style="color: #333;">New Contact Message from BlogLog</h2>
+          <p><strong style="color: #555;">Name:</strong> ${name}</p>
+          <p><strong style="color: #555;">Email:</strong> ${email}</p>
+          <p><strong style="color: #555;">Message:</strong></p>
+          <p style="background-color: #fff; border-left: 4px solid #007BFF; padding: 10px; color: #333;">${message}</p>
+          <br>
+          <p style="color: #777;">Thank you,<br>BlogLog Team</p>
+        </div>
+      `,
+    }
+    await transporter.sendMail(mailOptions); 
+
+    // Render the contact page with a success message
+    res.render('contact', {
+      currentRoute: '/contact',
+      message: 'Thank you for reaching out! We will get back to you soon.',
+    });
+  } catch (error) {
+    console.error(error);
+    res.render('contact', {
+      currentRoute: '/contact',
+      message: 'There was an error sending your message. Please try again later.',
+    });
+  }
+});
 
 // function insertPostData() {
 //   Post.insertMany([
