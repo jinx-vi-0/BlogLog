@@ -7,10 +7,11 @@ const transporter = require('../config/nodemailerConfig');
  * GET /
  * HOME
 */
-router.get('', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const locals = {
       title: "BlogLog",
+      user : req.cookies.token,
       description: "Made with ❤️"
     }
 
@@ -70,6 +71,7 @@ router.get('/post/:id', async (req, res) => {
 
     const locals = {
       title: data.title,
+      user : req.cookies.token,
       description: "Simple Blog created with NodeJs, Express & MongoDb.",
     }
 
@@ -125,6 +127,7 @@ router.post('/search', async (req, res) => {
 */
 router.get('/about', (req, res) => {
   res.render('about', {
+    user: req.cookies.token,
     currentRoute: '/about'
   });
 });
@@ -135,6 +138,7 @@ router.get('/about', (req, res) => {
 */
 router.get('/contact', (req, res) => {
   res.render('contact', {
+    user : req.cookies.token,
     currentRoute: '/contact'
   });
 });

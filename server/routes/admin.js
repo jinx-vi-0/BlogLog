@@ -7,25 +7,36 @@ const jwt = require('jsonwebtoken');
 
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
-const {z} = require('zod');
+const { z } = require('zod');
+
+/**
+ * Check whether the user is signed in or not 
+ * and makes the /admin route available only those users who are NOT logged
+ */
+
+const restrictAuthRouteMiddleware = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) return next();
+  return res.status(200).redirect('/')
+}
 
 /**
  * 
  * Check Login
 */
-const authMiddleware = (req, res, next ) => {
+const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
 
-  if(!token) {
-    return res.status(401).json( { message: 'Unauthorized'} );
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
   try {
     const decoded = jwt.verify(token, jwtSecret);
     req.userId = decoded.userId;
     next();
-  } catch(error) {
-    res.status(401).json( { message: 'Unauthorized'} );
+  } catch (error) {
+    res.status(401).json({ message: 'Unauthorized' });
   }
 }
 
@@ -34,7 +45,7 @@ const authMiddleware = (req, res, next ) => {
  * GET /
  * Admin - Login Page
 */
-router.get('/admin', async (req, res) => {
+router.get('/admin', restrictAuthRouteMiddleware, async (req, res) => {
   try {
     const locals = {
       title: "Admin",
@@ -55,20 +66,20 @@ router.get('/admin', async (req, res) => {
 router.post('/admin', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
-    const user = await User.findOne( { username } );
 
-    if(!user) {
-      return res.status(401).json( { message: 'Invalid credentials' } );
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if(!isPasswordValid) {
-      return res.status(401).json( { message: 'Invalid credentials' } );
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user._id}, jwtSecret );
+    const token = jwt.sign({ userId: user._id }, jwtSecret);
     res.cookie('token', token, { httpOnly: true });
     res.redirect('/dashboard');
 
@@ -83,9 +94,11 @@ router.post('/admin', async (req, res) => {
  * Admin Dashboard
 */
 router.get('/dashboard', authMiddleware, async (req, res) => {
+  const token = req.cookies.token;
   try {
     const locals = {
       title: 'Dashboard',
+      user : token, 
       description: 'Simple Blog created with NodeJs, Express & MongoDb.'
     }
 
@@ -108,9 +121,11 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
  * Admin - Create New Post
 */
 router.get('/add-post', authMiddleware, async (req, res) => {
+  const token = req.cookies.token;
   try {
     const locals = {
       title: 'Add Post',
+      user : token,
       description: 'Simple Blog created with NodeJs, Express & MongoDb.'
     }
 
@@ -156,10 +171,12 @@ router.post('/add-post', authMiddleware, async (req, res) => {
  * Admin - Create New Post
 */
 router.get('/edit-post/:id', authMiddleware, async (req, res) => {
+  const token = req.cookies.token;
   try {
 
     const locals = {
       title: "Edit Post",
+      user : token,
       description: "Free NodeJs User Management System",
     };
 
@@ -184,9 +201,10 @@ router.get('/edit-post/:id', authMiddleware, async (req, res) => {
 */
 router.put('/edit-post/:id', authMiddleware, async (req, res) => {
   try {
-
+    const token = req.cookies.token;
     await Post.findByIdAndUpdate(req.params.id, {
       title: req.body.title,
+      user : token,
       body: req.body.body,
       updatedAt: Date.now()
     });
@@ -203,7 +221,7 @@ router.put('/edit-post/:id', authMiddleware, async (req, res) => {
 // router.post('/admin', async (req, res) => {
 //   try {
 //     const { username, password } = req.body;
-    
+
 //     if(req.body.username === 'admin' && req.body.password === 'password') {
 //       res.send('You are logged in.')
 //     } else {
@@ -224,26 +242,26 @@ router.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const adminValidationSchema=z.object({
+    const adminValidationSchema = z.object({
       username: z.string().min(6).max(20),
-      password:z.string().min(6).max(20).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,"Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character")
-  })
+      password: z.string().min(6).max(20).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character")
+    })
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const parseData= adminValidationSchema.safeParse(req.body);
-    if(!parseData.success){
-        res.status(403).json(parseData.error);
-        return
+    const parseData = adminValidationSchema.safeParse(req.body);
+    if (!parseData.success) {
+      res.status(403).json(parseData.error);
+      return
     }
 
     try {
-      const user = await User.create({ username, password:hashedPassword });
+      const user = await User.create({ username, password: hashedPassword });
       res.status(201).json({ message: 'User Created', user });
     } catch (error) {
-      if(error.code === 11000) {
-        res.status(409).json({ message: 'User already in use'});
+      if (error.code === 11000) {
+        res.status(409).json({ message: 'User already in use' });
       }
-      res.status(500).json({ message: 'Internal server error'})
+      res.status(500).json({ message: 'Internal server error' })
     }
 
   } catch (error) {
@@ -259,7 +277,7 @@ router.post('/register', async (req, res) => {
 router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
 
   try {
-    await Post.deleteOne( { _id: req.params.id } );
+    await Post.deleteOne({ _id: req.params.id });
     res.redirect('/dashboard');
   } catch (error) {
     console.log(error);
@@ -275,7 +293,7 @@ router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
 router.get('/logout', (req, res) => {
   res.clearCookie('token');
   //res.json({ message: 'Logout successful.'});
-  res.redirect('/');
+  return res.redirect('/');
 });
 
 
