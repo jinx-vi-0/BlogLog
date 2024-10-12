@@ -1,26 +1,13 @@
 <h3>Sign In</h3>
 
-<form action="/admin" method="POST">
-
+<form action="/admin" method="POST"> <!-- Change action to /admin if using Passport.js -->
   <label for="username"><b>Username</b></label>
-  <input type="text" placeholder="Enter Username" name="username">
+  <input type="text" placeholder="Enter Username" name="username" required>
 
   <label for="password"><b>Password</b></label>
-  <input type="password" placeholder="Enter Password" name="password">
+  <input type="password" placeholder="Enter Password" name="password" required>
 
   <input type="submit" value="Login" class="btn">
-
+  <br>
+  Don't have an account? <a href="/register">Sign up</a>
 </form>
-
-<!-- <h3>Register</h3>
-<form action="/register" method="POST">
-
-  <label for="username"><b>Username</b></label>
-  <input type="text" placeholder="Enter Username" name="username">
-
-  <label for="password"><b>Password</b></label>
-  <input type="password" placeholder="Enter Password" name="password">
-
-  <input type="submit" value="Register" class="btn">
-
-</form> -->
