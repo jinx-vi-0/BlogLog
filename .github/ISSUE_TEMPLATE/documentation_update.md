@@ -1,5 +1,5 @@
 ---
-name: Documentation update
+name: Documentation Update
 about: Suggest updates or improvements to the existing documentation
 title: "[Documentation]"
 labels: documentation
