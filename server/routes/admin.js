@@ -10,15 +10,17 @@ const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
 const { z } = require('zod');
 
+const getTokenFromCookies = (req) => req.cookies.token;
+
 /**
  * Check whether the user is signed in or not 
  * and makes the /admin route available only those users who are NOT logged
  */
 
 const restrictAuthRouteMiddleware = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = getTokenFromCookies(req);
   if (!token) return next();
-  return res.status(200).redirect('/')
+  return res.status(200).redirect('/');
 }
 
 
@@ -26,7 +28,7 @@ const restrictAuthRouteMiddleware = (req, res, next) => {
  * Authentication Middleware
  */
 const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = getTokenFromCookies(req);
 
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' });
@@ -90,7 +92,7 @@ router.post('/admin', async (req, res, next) => {
 router.get('/dashboard', authMiddleware, async (req, res) => {
   const locals = {
     title: 'Dashboard',
-    user: req.cookies.token,
+    user: getTokenFromCookies(req),
     description: 'Simple Blog created with NodeJs, Express & MongoDb.',
   };
 
@@ -105,7 +107,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
  * Admin Add Post Route
  */
 router.get('/add-post', authMiddleware, async (req, res) => {
-  const token = req.cookies.token;
+  const token = getTokenFromCookies(req);
   try {
     const locals = {
       title: 'Add Post',
@@ -125,7 +127,7 @@ router.get('/add-post', authMiddleware, async (req, res) => {
  */
 router.post('/add-post', authMiddleware, async (req, res) => {
   try {
-    const token = req.cookies.token
+    const token = getTokenFromCookies(req);
     const newPost = new Post({
       title: req.body.title,
       user: token,
@@ -148,7 +150,7 @@ router.get('/edit-post/:id', authMiddleware, async (req, res) => {
   try {
     const locals = {
       title: 'Edit Post',
-      user : req.cookies.token,
+      user: getTokenFromCookies(req),
       description: 'Free NodeJs User Management System',
     };
 
@@ -201,7 +203,7 @@ router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
  * Admin - Registration Page
 */
 // Example of admin.js route handling
-router.get('/register',restrictAuthRouteMiddleware, (req, res) => {
+router.get('/register', restrictAuthRouteMiddleware, (req, res) => {
   // Initialize messages object, you can adjust it according to your error handling logic
   const locals = {
     title: 'Admin',
