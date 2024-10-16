@@ -74,6 +74,7 @@ router.post('/admin', async (req, res, next) => {
       if (err) {
         return res.status(500).json({ message: 'Error logging in' });
       }
+
       const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
       res.cookie('token', token, { httpOnly: true });
       return res.redirect('/dashboard'); // Now redirect to dashboard
@@ -236,6 +237,10 @@ router.post('/register', async (req, res) => {
     // Automatically log the user in
     req.login(user, (err) => {
       if (err) return res.status(500).json({ message: 'Error logging in after registration' });
+
+      const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
+      res.cookie('token', token, { httpOnly: true });
+      
       return res.redirect('/dashboard');
     });
   } catch (error) {
