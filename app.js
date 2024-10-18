@@ -7,8 +7,8 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const rfs = require("rotating-file-stream");
-const passport = require('passport'); // Added passport for authentication
-const flash = require('connect-flash'); // Added flash for storing flash messages
+const passport = require("passport"); // Added passport for authentication
+const flash = require("connect-flash"); // Added flash for storing flash messages
 
 const connectDB = require("./server/config/db");
 const { isActiveRoute } = require("./server/helpers/routeHelpers");
@@ -28,17 +28,6 @@ const accessLogStream = rfs.createStream("application.log", {
 app.use(morgan("combined", { stream: accessLogStream }));
 
 // Connect to DB
-
-app.use(session({
-    secret: 'your_secret_key', // Change this to your secret key
-    resave: false,
-    saveUninitialized: true,
-}));
-
-app.use(flash());
-
-
-// Connect to MongoDB
 connectDB();
 
 // Middleware setup
@@ -57,7 +46,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI, // Use MongoDB Atlas URI from .env
     }),
-    // cookie: { maxAge: new Date(Date.now() + 3600000) }// Uncomment if you want custom cookie expiry time
+    // cookie: { maxAge: new Date(Date.now() + 3600000) } // Uncomment if you want custom cookie expiry time
   })
 );
 
@@ -65,6 +54,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session()); // Persist user sessions
 
+// Flash message setup
+app.use(flash());
 
 // Global variables for flash messages
 app.use((req, res, next) => {
