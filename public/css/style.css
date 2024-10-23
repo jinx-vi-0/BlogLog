@@ -486,3 +486,42 @@ img {
   border-radius: 5px;
   text-align: center;
 }
+
+/*  css for add-btn  */
+
+.add-btn a {
+  position: fixed;
+  bottom: 6vh;
+  right: 5vw;
+  z-index: 100;
+  background-color: black;
+  color: white;
+  height: 10vw;
+  width: 10vw;
+  max-width: 60px;
+  max-height: 60px;
+  border-radius: 50%;
+  font-size: clamp(1rem, 4vw, 2.5rem);
+  animation: 3s infinite pulse;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.306);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 50px transparent;
+  }
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
