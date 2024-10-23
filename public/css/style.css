@@ -421,7 +421,25 @@ body.dark-mode {
   color: #E4E4E4; /* Light text color for general text */
   background-image: none;
 }
+* Dark Mode for About page */
+body.dark-mode .welcome-section {
+  background-color: #2c2c2c; /* Dark background */
+  color: #E4E4E4; /* Light text color */
+}
 
+body.dark-mode .welcome-section h2 {
+  color: #E4E4E4; /* Heading color in dark mode */
+}
+
+body.dark-mode .features-list li {
+  background: #3c3c3c; /* Match feature list item background in dark mode */
+  color: #E4E4E4; /* List text color */
+}
+
+body.dark-mode .welcome-section a.cta-button {
+  background-color: #00796b; /* Keep CTA button color */
+  color: white; /* Keep text color */
+}
 body.dark-mode a {
   color: #E4E4E4; /* Light color for links */
 }
