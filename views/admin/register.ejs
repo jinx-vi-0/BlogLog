@@ -1,11 +1,92 @@
 <h3>Register</h3>
-<form action="/register" method="POST">
-    <label for="username"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="username" required>
+<form action="/register" method="POST"  >
+    <div>
+        <div>
+            <label for="username" style="font-weight: bold;">Username</label>
+            <input type="text" placeholder="Enter Username" name="username" required id="username"
+                style="margin: 0; width: 100%;">
+            <div id="usernameError" style="color: red; display: none; width: 100%;"></div>
+            <!-- Error message container for username -->
+        </div>
 
-    <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" required>
+        <div>
+            <label for="password" style="font-weight: bold;">Password</label>
+            <input type="password" placeholder="Enter Password" name="password" required id="password"
+                style="margin: 0; width: 100%;">
+            <div id="passwordError" style="color: red; display: none; width: 100%;"></div>
+            <!-- Error message container for password -->
+        </div>
 
-    <input type="submit" value="Register" class="btn">
+        <div style="display: flex; justify-content: flex-start;">
+            <input type="submit" value="Register" class="btn">
+        </div>
+    </div>
+
+
 </form>
 
+
+<style>
+    form>div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    form>div div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+</style>
+
+<script>
+    function validateForm() {
+        const isUsernameValid = validateUsername();
+        const isPasswordValid = validatePassword();
+        return isUsernameValid && isPasswordValid; // Allow form submission only if both are valid
+    }
+
+    function validateUsername() {
+        const username = document.getElementById('username').value;
+        const usernameError = document.getElementById('usernameError');
+        const minLength = 3; // Minimum length for username
+
+        // Clear previous error message
+        usernameError.style.display = 'none';
+        usernameError.textContent = '';
+
+        if (username.length < minLength || !/^[a-zA-Z0-9]+$/.test(username)) {
+            usernameError.textContent = 'Username must be at least 3 characters long and contain only alphanumeric characters.';
+            usernameError.style.display = 'block'; // Show error message
+            return false; // Invalid username
+        }
+        return true; // Valid username
+    }
+
+    function validatePassword() {
+        const password = document.getElementById('password').value;
+        const passwordError = document.getElementById('passwordError');
+        const minLength = 8;
+        const hasNumber = /\d/;
+        const hasSpecialChar = /[!@#$%^&*]/;
+
+        // Clear previous error message
+        passwordError.style.display = 'none';
+        passwordError.textContent = '';
+
+        if (password.length < minLength || !hasNumber.test(password) || !hasSpecialChar.test(password)) {
+            passwordError.textContent = 'Password must be at least 8 characters long, contain a number, and a special character.';
+            passwordError.style.display = 'block'; // Show error message
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+
+    // Add event listeners for real-time validation
+    document.getElementById('username').addEventListener('input', validateUsername);
+    document.getElementById('password').addEventListener('input', validatePassword);
+</script>

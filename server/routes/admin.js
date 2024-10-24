@@ -222,8 +222,19 @@ router.post('/register', async (req, res) => {
     return res.redirect('/register'); // Change to '/register'
   }
 
+  if (!/^[a-zA-Z0-9]+$/.test(username) || username.length < 3) {
+    req.flash('error', 'Username must be at least 3 characters long and contain only alphanumeric characters.');
+    return res.redirect('/register');
+  }
+
+  if (password.length < 8 || !/\d/.test(password) || !/[!@#$%^&*]/.test(password)) {
+    req.flash('error', 'Password must be at least 8 characters long, contain a number, and a special character.');
+    return res.redirect('/register');
+  }
+
   try {
     const existingUser = await User.findOne({ username });
+    
     if (existingUser) {
       req.flash('error', 'Username already taken');
       return res.redirect('/register'); // Change to '/register'
