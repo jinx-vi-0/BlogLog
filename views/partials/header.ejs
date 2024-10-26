@@ -12,6 +12,12 @@
       <li>
         <a href="/contact" class="<%= isActiveRoute('/contact', currentRoute) %>">Contact</a>
       </li>
+      <li>
+        <a href="/admin" class="<%= isActiveRoute('/admin', currentRoute) %>">Login</a>
+      </li>
+    <li>
+        <a href="/add-post" class="<%= isActiveRoute('/admin', currentRoute) %>">Post</a>
+      </li>
     </ul>
 
   </nav>
@@ -24,6 +30,16 @@
         <path d="M14.875 14.875L11.7938 11.7938" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
+    
+      
+      <% if (locals.user) { %>
+        <button id="LogIn"><a style="text-decoration: none;" href="/logout">Log Out</a></button>
+      <% } else { %>
+        <button id="LogIn" onclick="window.location.href = '/admin'">Log In</button>
+      <% } %>
+      
+     
   </div>
 
 </header>
+

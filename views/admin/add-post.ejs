@@ -1,16 +1,218 @@
-<a href="/dashboard">&larr; Back</a>
-<div class="admin-title">
-  <h2>Add New Post</h2>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add a New Blog</title>
+    <style>
+      /* Base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
 
-<form action="/add-post" method="POST">
+      body {
+        background-color: #f7f7f7;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        color: #333;
+      }
 
-  <label for="title"><b>Title</b></label>
-  <input type="text" placeholder="Post Title" name="title">
+      /* Navbar */
+      .navbar {
+        width: 100%;
+        background-color: #fff;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
 
-  <label for="body"><b>Content</b></label>
-  <textarea name="body" cols="50" rows="10"></textarea>
+      .navbar h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
 
-  <input type="submit" value="Add" class="btn">
+      .navbar a {
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
 
-</form>
+      .navbar a:hover {
+        color: #ff5f6d;
+      }
+
+      /* Content Wrapper */
+      .content-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 50px;
+        height: 100%;
+        width: 100%;
+      }
+
+      /* Left Side */
+      .content-left {
+        width: 50%;
+      }
+
+      .content-left h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #ff5f6d;
+      }
+
+      .content-left p {
+        font-size: 1.5rem;
+        color: #555;
+        margin-top: 20px;
+      }
+
+      /* Right Side (Form) */
+      .content-right {
+        width: 45%;
+        background-color: #fff;
+        padding: 40px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .blog-form-container h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+      }
+
+      .blog-form .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #555;
+        transition: border-color 0.3s;
+      }
+
+      input[type="text"]:focus,
+      textarea:focus {
+        border-color: #ff5f6d;
+        outline: none;
+      }
+
+      textarea {
+        resize: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        background-color: #ff5f6d;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #ff4e50;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive */
+      @media screen and (max-width: 768px) {
+        .content-wrapper {
+          flex-direction: column;
+          padding: 20px;
+        }
+
+        .content-left,
+        .content-right {
+          width: 100%;
+        }
+
+        .content-left {
+          margin-bottom: 30px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="content-wrapper">
+      <div class="content-left">
+        <h1>Create Your Masterpiece</h1>
+        <p>Share your thoughts and experiences with the world!</p>
+      </div>
+
+      <div class="content-right">
+        <div class="blog-form-container">
+          <h2>Add a New Blog</h2>
+          <form class="blog-form" method="post" action="/add-post">
+            <div class="form-group">
+              <label for="blog-title">Blog Title</label>
+              <input
+              name ="title"
+
+                type="text"
+                id="blog-title"
+                placeholder="Enter your blog title..."
+              />
+            </div>
+            <div class="form-group">
+              <label for="author-name">Author Name</label>
+              <input type="text" id="author-name" placeholder="Your name..." name="author"/>
+            </div>
+            <div class="form-group">
+              <label for="blog-content">Blog Content</label>
+              <textarea
+                id="blog-content"
+                rows="10"
+                name="body"
+                placeholder="Write your blog content here..."
+              ></textarea>
+            </div>
+            <button type="submit">Publish Blog</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
