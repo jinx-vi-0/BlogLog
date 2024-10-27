@@ -191,6 +191,20 @@ router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// POST: Add a like to a post
+app.post('/posts/:id/like', async (req, res) => {
+    const postId = req.params.id;
+    const userId = req.user.id; // Assume user is authenticated
+
+    const post = await Post.findById(postId);
+    if (!post.likedBy.includes(userId)) {
+        post.likes += 1;
+        post.likedBy.push(userId);
+        await post.save();
+    }
+    res.status(200).json(post);
+});
+
 /**
  * POST /register
  * Admin Registration Route
