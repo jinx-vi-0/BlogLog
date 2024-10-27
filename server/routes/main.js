@@ -184,6 +184,18 @@ router.post('/send-message', async (req, res) => {
   }
 });
 
+const handleLike = async () => {
+    if (!liked) {
+        await axios.post(`/posts/${postId}/like`);
+    } else {
+        await axios.delete(`/posts/${postId}/like`);
+    }
+    setLiked(!liked); // Update UI state
+    fetchPostData(); // Re-fetch or update post data
+};
+<span>{post.likes} Reactions</span>
+
+
 // function insertPostData() {
 //   Post.insertMany([
 //     {
