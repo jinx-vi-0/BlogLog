@@ -17,7 +17,15 @@ const PostSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  likes: {  // Counter for the number of likes
+    type: Number,
+    default: 0
+  },
+  likedBy: [{ // Array of user IDs who liked the post, to prevent duplicate likes
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 });
 
 module.exports = mongoose.model('Post', PostSchema);
