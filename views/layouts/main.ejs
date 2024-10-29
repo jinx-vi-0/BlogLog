@@ -14,7 +14,15 @@
   
   <%- include('../partials/search.ejs')  %>
   <div class="container">
+
+    <%- include('../partials/header.ejs')  %>
+    <!-- Dark Mode Toggle Button -->
+    <div>
+      <button id="dark-mode-toggle">Dark Mode</button>
+  </div>
+
     <%- include('../partials/header.ejs', { currentRoute: locals.currentRoute }) %>
+
     <main class="main">
       <%- body %>
     </main>
