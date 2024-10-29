@@ -258,8 +258,15 @@ img {
 
 /* Footer */
 .footer {
-  margin: 4rem;
+  /* margin: 4rem; */
   text-align: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #a39f9f;
+  color: #000;
+
 }
 
 
