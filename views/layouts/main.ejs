@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= locals.title %></title>
+  <title>
+    <%= locals.title %>
+  </title>
   <meta name="description" content="<%= locals.description %>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <script type="text/javascript" defer src="/js/script.js"></script>
 </head>
+
 <body>
-  
-  <%- include('../partials/search.ejs')  %>
-  <div class="container">
 
-    <%- include('../partials/header.ejs')  %>
-    <!-- Dark Mode Toggle Button -->
-    <div>
-      <button id="dark-mode-toggle">Dark Mode</button>
-  </div>
+  <%- include('../partials/search.ejs') %>
+    <div class="container">
 
-    <%- include('../partials/header.ejs', { currentRoute: locals.currentRoute }) %>
+      <%- include('../partials/header.ejs', { currentRoute: locals.currentRoute }) %>
+        <!-- Dark Mode Toggle Button -->
+        <div>
+          <button id="dark-mode-toggle">Dark Mode</button>
+        </div>
 
-    <main class="main">
-      <%- body %>
-    </main>
-    <%- include('../partials/footer.ejs')  %>
-  </div>  
+        <main class="main">
+          <%- body %>
+        </main>
+        <%- include('../partials/footer.ejs') %>
+    </div>
 
 </body>
+
 </html>
