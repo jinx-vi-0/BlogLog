@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600;700&display=swap');
 
 :root {
@@ -405,6 +406,86 @@ img {
   background-color: #004d40;
 }
 
+#dark-mode-toggle {
+  padding: 10px 20px; /* Adjust padding for size */
+  background-color: var(--black); /* Use a color variable for consistency */
+  color: white; /* Text color */
+  border: none; /* Remove border */
+  border-radius: var(--border-radius); /* Use consistent border radius */
+  cursor: pointer; /* Change cursor on hover */
+  font-size: 16px; /* Adjust font size */
+  font-family: 'Poppins', sans-serif; /* Match font family */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+#dark-mode-toggle:hover {
+  background-color: var(--gray); /* Change background on hover */
+}
+
+/* Dark Mode Styles */
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: #1c1c1c; /* Dark background */
+  color: #E4E4E4; /* Light text color for general text */
+  background-image: none;
+}
+* Dark Mode for About page */
+body.dark-mode .welcome-section {
+  background-color: #2c2c2c; /* Dark background */
+  color: #E4E4E4; /* Light text color */
+}
+
+body.dark-mode .welcome-section h2 {
+  color: #E4E4E4; /* Heading color in dark mode */
+}
+
+body.dark-mode .features-list li {
+  background: #3c3c3c; /* Match feature list item background in dark mode */
+  color: #E4E4E4; /* List text color */
+}
+
+body.dark-mode .welcome-section a.cta-button {
+  background-color: #00796b; /* Keep CTA button color */
+  color: white; /* Keep text color */
+}
+body.dark-mode a {
+  color: #E4E4E4; /* Light color for links */
+}
+
+body.dark-mode .btn {
+  background-color: #3c3c3c; /* Button background for dark mode */
+  color: var(--black); /* Button text color for dark mode */
+}
+
+body.dark-mode .btn-delete {
+  background-color: #f44336; /* Keep delete button red */
+  color: white; /* Text color for delete button */
+}
+
+body.dark-mode .header__button button {
+  color: #E4E4E4; /* Header button text color */
+  border: 2px solid #E4E4E4; /* Light border for visibility */
+}
+
+body.dark-mode .welcome-section {
+  background-color:  #2c2c2c; /* Dark background for the welcome section */
+  color: #E4E4E4; /* Light text color for the welcome section */
+}
+
+body.dark-mode .features-list li {
+  background: #3c3c3c; /* Dark background for feature list items */
+}
+
+body.dark-mode .welcome-section a.cta-button {
+  background-color: #00796b; /* Keep CTA button color */
+  color: white; /* Keep text color for CTA button */
+}
+
+body.dark-mode .pagination {
+  color: #E4E4E4; /* Light pagination text color */
+}
+=======
+
 /* Contact Us Page Styling */
 .contact-section {
   width: 100%;
@@ -524,4 +605,5 @@ img {
     box-shadow: 0 0 0 0 transparent;
   }
 }
+
 
