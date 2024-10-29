@@ -12,9 +12,6 @@
       <li>
         <a href="/contact" class="<%= isActiveRoute('/contact', currentRoute) %>">Contact</a>
       </li>
-      <li>
-        <a href="/admin" class="<%= isActiveRoute('/admin', currentRoute) %>">Login</a>
-      </li>
     <li>
         <a href="/add-post" class="<%= isActiveRoute('/admin', currentRoute) %>">Post</a>
       </li>
@@ -38,7 +35,12 @@
         <button id="LogIn" onclick="window.location.href = '/admin'">Log In</button>
       <% } %>
       
-     
+       <!-- Dark Mode Toggle Button -->
+      <button id="dark-mode-toggle" style="margin-left: 0.5rem;">
+        <i class="fa-solid" id="dark-icon"></i>
+      </button>
+   
+
   </div>
 
 </header>

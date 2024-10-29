@@ -1,26 +1,32 @@
 document.addEventListener('DOMContentLoaded', function(){
   const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const icon=document.getElementById('dark-icon');
   const body = document.body;
-
+  
   const savedDarkMode = localStorage.getItem('darkMode');
   if (savedDarkMode == 'enabled') {
+
     body.classList.add('dark-mode');
+    icon.classList.add('fa-sun')
   } else {
     body.classList.remove('dark-mode');
-    if (darkModeToggle) darkModeToggle.textContent ='Dark Mode';
+    icon.classList.add('fa-moon')
   }
   
 
   if (darkModeToggle) {
+
     darkModeToggle.addEventListener("click", function() {
         body.classList.toggle("dark-mode");
-
+      
         if (body.classList.contains('dark-mode')){
           localStorage.setItem('darkMode','enabled');
-          darkModeToggle.textContent ="Light Mode";
+          icon.classList.remove('fa-moon');
+          icon.classList.add('fa-sun');
         } else {
           localStorage.setItem('darkMode','disabled');
-          darkModeToggle.textContent ="Dark Mode";
+          icon.classList.remove('fa-sun');
+          icon.classList.add('fa-moon');
         }
     });
 }
