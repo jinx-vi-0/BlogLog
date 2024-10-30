@@ -45,6 +45,12 @@ const authMiddleware = (req, res, next) => {
  * GET /
  * Admin - Login Page
 */
+
+router.use((req, res, next) => {
+  res.locals.layout = './layouts/admin'; // Set the layout for the response
+  next(); // Call the next middleware or route handler
+});
+
 router.get('/admin', restrictAuthRouteMiddleware, async (req, res) => {
   try {
     const locals = {
