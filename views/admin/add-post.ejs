@@ -184,13 +184,19 @@
 
       <div class="content-right">
         <div class="blog-form-container">
+          <% if (typeof message !== 'undefined' && message.errors && message.errors.length) { %>
+            <div class="message" style="background-color: #f0a2a8; color: #000000;">
+              <% message.errors.forEach(err => { %>
+                <p><%= err.msg %></p>
+              <% }); %>
+            </div>
+          <% } %>          
           <h2>Add a New Blog</h2>
           <form class="blog-form" method="post" action="/add-post">
             <div class="form-group">
               <label for="blog-title">Blog Title</label>
               <input
-              name ="title"
-
+                name ="title"
                 type="text"
                 id="blog-title"
                 placeholder="Enter your blog title..."

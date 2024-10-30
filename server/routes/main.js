@@ -3,6 +3,9 @@ const router = express.Router();
 const Post = require('../models/Post');
 const ContactMessage = require('../models/contactMessage');
 const transporter = require('../config/nodemailerConfig');
+const { validateContact } = require('../validations/authValidator');
+
+
 /**
  * GET /
  * HOME
@@ -149,10 +152,10 @@ router.get('/contact', (req, res) => {
   });
 });
 
-router.post('/send-message', async (req, res) => {
+router.post('/send-message',validateContact ,async (req, res) => {
   const { name, email, message } = req.body;
 
-  try {
+  try {``
     // Create a new contact message
     const newMessage = new ContactMessage({ name, email, message });
     await newMessage.save();
