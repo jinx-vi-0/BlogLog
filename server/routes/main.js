@@ -7,6 +7,12 @@ const transporter = require('../config/nodemailerConfig');
  * GET /
  * HOME
 */
+
+router.use((req, res, next) => {
+  res.locals.layout = './layouts/main'; // Set the layout for the response
+  next(); // Call the next middleware or route handler
+});
+
 router.get('/', async (req, res) => {
   try {
     const locals = {
