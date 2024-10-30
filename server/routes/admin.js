@@ -5,6 +5,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');  // Added passport import
+const { validateRegistration, validatePost } = require('../validations/authValidator');
 
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
@@ -119,7 +120,7 @@ router.get('/add-post', authMiddleware, async (req, res) => {
       description: 'Simple Blog created with NodeJs, Express & MongoDb.',
     };
 
-    res.render('admin/add-post', { locals, layout: adminLayout });
+    res.render('admin/add-post', {locals, layout: adminLayout });
   } catch (error) {
     console.log(error);
   }
@@ -129,7 +130,7 @@ router.get('/add-post', authMiddleware, async (req, res) => {
  * POST /add-post
  * Admin Create New Post Route
  */
-router.post('/add-post', authMiddleware, async (req, res) => {
+router.post('/add-post', authMiddleware,validatePost, async (req, res) => {
   try {
     const token = req.cookies.token
     const newPost = new Post({
@@ -170,7 +171,7 @@ router.get('/edit-post/:id', authMiddleware, async (req, res) => {
  * PUT /edit-post/:id
  * Admin Update Post Route
  */
-router.put('/edit-post/:id', authMiddleware, async (req, res) => {
+router.put('/edit-post/:id', authMiddleware,validatePost, async (req, res) => {
   try {
     await Post.findByIdAndUpdate(req.params.id, {
       title: req.body.title,
@@ -219,7 +220,7 @@ router.get('/register',restrictAuthRouteMiddleware, (req, res) => {
 
 
 
-router.post('/register', async (req, res) => {
+router.post('/register',validateRegistration, async (req, res) => {
   const { username, password } = req.body;
 
   // Simple validation
