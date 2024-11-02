@@ -4,23 +4,81 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Dynamic Title and Description for SEO -->
   <title><%= locals.title %></title>
   <meta name="description" content="<%= locals.description %>">
+  
+  <!-- Additional SEO Meta Tags -->
+  <meta name="keywords" content="BlogLog, Jinx, Blogging, Web Development, Coding, Technology, Programming">
+  <meta name="author" content="Jinx">
+  
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://github.com/jinx-vi-0/BlogLog">
+  <meta property="og:title" content="<%= locals.title %>">
+  <meta property="og:description" content="<%= locals.description %>">
+  <meta property="og:image" content="/img/hero-image.webp">
+  <meta property="og:site_name" content="BlogLog">
+  
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://github.com/jinx-vi-0/BlogLog">
+  <meta name="twitter:title" content="<%= locals.title %>">
+  <meta name="twitter:description" content="<%= locals.description %>">
+  <meta name="twitter:image" content="/img/hero-image.webp">
+
+  <!-- Structured Data for SEO using JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://github.com/jinx-vi-0/BlogLog"
+    },
+    "headline": "<%= locals.title %>",
+    "description": "<%= locals.description %>",
+    "image": "/img/hero-image.webp",
+    "author": {
+      "@type": "Person",
+      "name": "Jinx"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "BlogLog",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "/img/logo.webp"
+      }
+    },
+    "datePublished": "<%= locals.publishDate %>",
+    "dateModified": "<%= locals.updateDate %>"
+  }
+  </script>
+
+  <!-- Stylesheets and Scripts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <script type="text/javascript" defer src="/js/script.js"></script>
 </head>
 <body>
-  
-  <%- include('../partials/search.ejs')  %>
+
+  <%- include('../partials/search.ejs') %>
   <div class="container">
 
-    <%- include('../partials/header.ejs')  %>
+    <%- include('../partials/header.ejs') %>
     
     <main class="main">
       <%- body %>
     </main>
-    <%- include('../partials/footer.ejs')  %>
+    
+    <%- include('../partials/footer.ejs') %>
+    
+    <!-- Footer with GitHub Link -->
+    <footer>
+      <p>Check out the project on <a href="https://github.com/jinx-vi-0/BlogLog" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+    </footer>
   </div>  
 
 </body>
