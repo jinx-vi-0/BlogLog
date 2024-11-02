@@ -52,6 +52,13 @@ npm install
 Create a `.env` file in the root directory and add the following line:
 ```bash
 MONGODB_URI=mongodb://localhost:27017/bloglog
+EMAIL_USERNAME=
+EMAIL_APP_PASSWORD=
+JWT_SECRET=
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
 
 4. Start the Server:

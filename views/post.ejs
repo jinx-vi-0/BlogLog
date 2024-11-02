@@ -1,2 +1,13 @@
-<h1><%= data.title %></h1>
+<style>
+    .poster {
+        max-height: 500px;
+        border-radius: 10px;
+    }
+</style>
+
+<!-- HTML structure -->
+<img class="poster" src="<%= data.poster %>" />
+<h1>
+    <%= data.title %>
+</h1>
 <article class="article"><%= data.body %></article>

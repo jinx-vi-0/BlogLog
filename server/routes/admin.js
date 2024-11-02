@@ -9,7 +9,31 @@ const { validateRegistration, validatePost } = require('../validations/authValid
 
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
-const { z } = require('zod');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'post',
+    format: async (req, file) => 'jpeg', // Supports promises as well
+    public_id: (req, file) =>
+      Date.now() +
+      '-' +
+      file.originalname.replace(/[^a-zA-Z0-9_.-]/g, '_').slice(0, 100),
+  },
+});
+
+const upload = multer({ storage });
+
 
 /**
  * Check whether the user is signed in or not 
@@ -130,15 +154,17 @@ router.get('/add-post', authMiddleware, async (req, res) => {
  * POST /add-post
  * Admin Create New Post Route
  */
-router.post('/add-post', authMiddleware,validatePost, async (req, res) => {
+router.post('/add-post', upload.single('poster'), authMiddleware, validatePost, async (req, res) => {
   try {
     const token = req.cookies.token
+
     const newPost = new Post({
       title: req.body.title,
       user: token,
       body: req.body.body,
+      author: req.body.author,
+      poster: req.file ? await cloudinary.uploader.upload(req.file.path).then(r => r.secure_url) : null
     });
-
 
     await Post.create(newPost);
     res.redirect('/dashboard');
@@ -171,11 +197,13 @@ router.get('/edit-post/:id', authMiddleware, async (req, res) => {
  * PUT /edit-post/:id
  * Admin Update Post Route
  */
-router.put('/edit-post/:id', authMiddleware,validatePost, async (req, res) => {
+router.put('/edit-post/:id', upload.single('poster'), authMiddleware, validatePost, async (req, res) => {
   try {
     await Post.findByIdAndUpdate(req.params.id, {
       title: req.body.title,
       body: req.body.body,
+      author: req.body.author,
+      ...(req.file ? { poster: await cloudinary.uploader.upload(req.file.path).then(r => r.secure_url) } : {}),
       updatedAt: Date.now(),
     });
 

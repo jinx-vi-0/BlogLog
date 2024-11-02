@@ -53,11 +53,11 @@ const validatePost = [
     .escape(),
 
   (req, res, next) => {
+    console.log(req.body)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.render('admin/add-post', {message: errors });
-    }
-    next();
+    } else next();
   }
 ];
 

@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -90,11 +87,13 @@
     }
   </style>
 </head>
+
+
 <a href="/dashboard">&larr; Back</a>
 <h1 style="margin: 0px">Add New Post</h1>
 <hr>
 
-<form class="blog-form" method="post" action="/add-post">
+<form class="blog-form" method="post" action="/add-post" enctype="multipart/form-data">
   <div class="main-container">
     <% if (typeof message !=='undefined' && message.errors && message.errors.length) { %>
       <div class="message">
@@ -119,15 +118,20 @@
       <input type="text" id="author-name" placeholder="Your name..." name="author" />
     </div>
 
-    <div>
-      <label for="author-name"><b>Blog Poster</b></label>
-      <div class="image-placeholder">
-        <p>Image Placeholder</p>
-      </div>
+    <div style="display: flex; flex-direction: column;">
+      <label for="poster"><b>Blog Poster</b></label>
+      <input type="file" id="poster" name="poster" onchange="loadFile(event)">
+      <img id="blogImage" src="#" alt="your image" style="width: 100%; height: 300px;display: none;" />
     </div>
 
     <button type="submit">Publish Blog</button>
   </div>
 </form>
 
-</html>
+<script>
+  var loadFile = function (event) {
+    var image = document.getElementById('blogImage');
+    image.src = URL.createObjectURL(event.target.files[0]);
+    image.style.display = 'block';
+  };
+</script>
