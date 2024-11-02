@@ -10,6 +10,14 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
+  poster: {
+    type: String,
+    required: false
+  },
+  author: {
+    type: String,
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now

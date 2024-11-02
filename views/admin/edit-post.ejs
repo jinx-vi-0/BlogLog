@@ -1,3 +1,88 @@
+<style>
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    background-color: #ff5f6d;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+
+  button:hover {
+    background-color: #ff4e50;
+  }
+
+  /* New classes for styling */
+  .blog-form {
+    display: flex;
+    gap: 20px;
+  }
+
+  .main-container {
+    flex-grow: 1;
+    border-radius: 5px;
+  }
+
+  .message {
+    background-color: #f0a2a8;
+    color: #000000;
+  }
+
+  .prop-container {
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .image-placeholder {
+    background-color: #ffffff;
+    width: 100%;
+    height: 100px;
+    border: 0.5px dashed #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #999;
+    outline: 1px dashed #000;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .blog-form {
+      flex-direction: column;
+      /* Stack elements vertically */
+    }
+
+    .main-container,
+    .prop-container {
+      width: 100%;
+      /* Full width on small screens */
+      margin-bottom: 10px;
+      /* Space between elements */
+    }
+
+    button {
+      font-size: 1rem;
+      /* Smaller button text */
+    }
+
+    .image-placeholder {
+      height: 80px;
+      /* Adjust height for smaller screens */
+    }
+  }
+</style>
+
 <a href="/dashboard">&larr; Back</a>
 <div class="admin-title">
   <h2>View / Edit Post</h2>
@@ -5,17 +90,48 @@
   <form action="/delete-post/<%= data._id %>?_method=DELETE" method="POST">
     <input type="submit" value="Delete" class="btn-delete btn">
   </form>
-
 </div>
 
-<form action="/edit-post/<%= data._id %>?_method=PUT" method="POST">
+<form class="blog-form" method="post" action="/edit-post/<%= data._id %>?_method=PUT" enctype="multipart/form-data">
+  <div class="main-container">
+    <% if (typeof message !=='undefined' && message.errors && message.errors.length) { %>
+      <div class="message">
+        <% message.errors.forEach(err=> { %>
+          <p>
+            <%= err.msg %>
+          </p>
+          <% }); %>
+      </div>
+      <% } %>
 
-  <label for="title"><b>Title</b></label>
-  <input type="text" placeholder="Post Title" name="title" value="<%= data.title %>">
+        <label for="blog-title"><b>Blog Title</b></label>
+        <input name="title" type="text" id="blog-title" placeholder="Enter your blog title..."
+          value="<%= data.title %>" />
 
-  <label for="body"><b>Content</b></label>
-  <textarea name="body" cols="50" rows="10"><%= data.body %></textarea>
+        <label for="blog-content"><b>Blog Content</b></label>
+        <textarea id="blog-content" rows="10" name="body"
+          placeholder="Write your blog content here..."><%= data.body %></textarea>
+  </div>
 
-  <input type="submit" value="Update" class="btn">
+  <div class="prop-container">
+    <div>
+      <label for="author-name"><b>Author Name</b></label>
+      <input type="text" id="author-name" placeholder="Your name..." name="author" value="<%= data.author %>" />
+    </div>
 
+    <div style="display: flex; flex-direction: column;">
+      <label for="poster"><b>Blog Poster</b></label>
+      <input type="file" id="poster" name="poster" onchange="loadFile(event)">
+      <img id="blogImage" src="<%= data.poster %>" alt="your image" style="width: 100%; height: 300px;" />
+    </div>
+
+    <button type="submit">Update</button>
+  </div>
 </form>
+
+<script>
+  var loadFile = function (event) {
+    var image = document.getElementById('blogImage');
+    image.src = URL.createObjectURL(event.target.files[0]);
+  };
+</script>
