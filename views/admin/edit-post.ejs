@@ -5,7 +5,8 @@
     padding: 0 10px;
   }
 
-  button {
+
+  button[type='submit'] {
     width: 100%;
     padding: 14px;
     background-color: #ff5f6d;
@@ -17,7 +18,7 @@
     margin-top: 20px;
   }
 
-  button:hover {
+  button[type='submit']:hover {
     background-color: #ff4e50;
   }
 
@@ -54,6 +55,79 @@
     font-size: 14px;
     color: #999;
     outline: 1px dashed #000;
+  }
+
+  .editor-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .tab-container {
+    display: flex;
+    border: 1px solid #d0d7de;
+    border-bottom: none;
+
+    background-color: #f6f8fa;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    cursor: pointer;
+    border-right: 1px solid #d0d7de;
+    color: #24292f;
+    background: none;
+    border: none;
+    font-size: 14px;
+  }
+
+  .tab:first-child {
+    border-radius: 6px 0 0 0;
+  }
+
+  .tab.active {
+    background-color: #ffffff;
+    border-bottom: 2px solid #0969da;
+  }
+
+  .toolbar-button {
+    padding: 4px 8px;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .toolbar-button:hover {
+    background-color: #eaeef2;
+    border-color: #d0d7de;
+  }
+
+  .content-area {
+    width: 100%;
+    min-height: 200px;
+    padding: 16px;
+    border: 1px solid #d0d7de;
+    border-radius: 0 0 6px 6px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+
+  .preview-area {
+    display: none;
+    width: 100%;
+    min-height: 300px;
+    padding: 16px;
+    border: 1px solid #d0d7de;
+    background-color: #ffffff;
+    box-sizing: border-box;
+  }
+
+  .helper-text {
+    margin-top: 8px;
+    color: #57606a;
+    font-size: 12px;
   }
 
   /* Responsive styles */
@@ -109,8 +183,18 @@
           value="<%= data.title %>" />
 
         <label for="blog-content"><b>Blog Content</b></label>
-        <textarea id="blog-content" rows="10" name="body"
-          placeholder="Write your blog content here..."><%= data.body %></textarea>
+        <div class="editor-container">
+          <div class="tab-container">
+            <button type="button" class="tab active" onclick="switchTab('write')">Write</button>
+            <button type="button" class="tab" onclick="switchTab('preview')">Preview</button>
+          </div>
+
+          <textarea id="editor" rows="10" name="body"
+            placeholder="Write your blog content here..."><%= data.body %></textarea>
+          <div id="preview" class="preview-area"></div>
+
+          <div class="helper-text">Markdown is supported</div>
+        </div>
   </div>
 
   <div class="prop-container">
@@ -129,9 +213,41 @@
   </div>
 </form>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/11.0.0/markdown-it.min.js"
+  integrity="sha256-3mv+NUxFuBg26MtcnuN2X37WUxuGunWCCiG2YCSBjNc=" crossorigin="anonymous"></script>
+
 <script>
-  var loadFile = function (event) {
+  let mdit = new markdownit();
+
+  function loadFile(event) {
     var image = document.getElementById('blogImage');
     image.src = URL.createObjectURL(event.target.files[0]);
+    image.style.display = 'block';
   };
+
+  function switchTab(tab) {
+    var editor = document.getElementById('editor');
+    var preview = document.getElementById('preview');
+    var tabs = document.querySelectorAll('.tab');
+
+    // Remove active class from all tabs
+    tabs.forEach(function (t) {
+      t.classList.remove('active');
+    });
+
+    // Add active class to clicked tab
+    if (tab === 'write') {
+      tabs[0].classList.add('active');
+      editor.style.display = 'block';
+      preview.style.display = 'none';
+    } else {
+      tabs[1].classList.add('active');
+      editor.style.display = 'none';
+      preview.style.display = 'block';
+      let parsedHtml = mdit.render(editor.value)
+      preview.innerHTML = parsedHtml
+    }
+  }
+
 </script>

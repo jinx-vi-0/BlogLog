@@ -3,6 +3,10 @@
         max-height: 500px;
         border-radius: 10px;
     }
+
+    .article h1, h2, h3, h4, p, ul, ol {
+        margin: 0
+    }
 </style>
 
 <!-- HTML structure -->
@@ -10,4 +14,28 @@
 <h1>
     <%= data.title %>
 </h1>
-<article class="article"><%= data.body %></article>
+<div class="article">
+    <%= data.body %>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/11.0.0/markdown-it.min.js"
+    integrity="sha256-3mv+NUxFuBg26MtcnuN2X37WUxuGunWCCiG2YCSBjNc=" crossorigin="anonymous"></script>
+
+<script>
+    // Initialize Markdown-it
+    let mdit = new markdownit({
+        breaks: true,
+        quotes: '“”‘’'
+    }).disable(['image'])
+
+    // Select the article element
+    let articleElement = document.getElementsByClassName('article')[0];
+
+    console.log(articleElement.textContent.trim())
+
+    // Parse Markdown from the article's content and render as HTML
+    let parsedHtml = mdit.render(articleElement.textContent.trim());
+
+    // Set the inner HTML of the article element to the parsed HTML
+    articleElement.innerHTML = parsedHtml;
+</script>
