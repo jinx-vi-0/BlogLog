@@ -1,0 +1,89 @@
+<style>
+    .posts {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .post {
+        border-bottom: 2px solid var(--gray-light);
+    }
+
+    .post .heading {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .post .heading a {
+        text-decoration: none;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        font-size: clamp(1.13rem, calc(1.08rem + 0.22vw), 1.25rem);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .post .heading a:hover {
+        color: var(--primary-color);
+        text-decoration: underline;
+    }
+
+    .post .description {
+        color: var(--gray);
+        margin-bottom: 10px;
+    }
+</style>
+
+
+<div class="search-bar" style="display: flex; justify-content: flex-end; margin-bottom: 20px; background: transparent;">
+    <div action="/search" method="GET" style="display: flex;">
+        <input type="text" onchange="search()" value="<%= search %>" name="query" placeholder="Search posts..." required
+            style="border: none; border-bottom: 1px solid black; outline: none; margin-right: 10px; height: 2rem; background: transparent;">
+        <svg width="30" height="30" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M7.79167 13.4583C10.9213 13.4583 13.4583 10.9213 13.4583 7.79167C13.4583 4.66205 10.9213 2.125 7.79167 2.125C4.66205 2.125 2.125 4.66205 2.125 7.79167C2.125 10.9213 4.66205 13.4583 7.79167 13.4583Z"
+                stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M14.875 14.875L11.7938 11.7938" stroke="black" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round"></path>
+        </svg>
+    </div>
+</div>
+
+<div class="posts">
+    <% data.forEach(post=> { %>
+        <div class="post">
+            <div class="heading">
+                <a href="/post/<%= post._id %>">
+                    <%= post.title %>
+                </a>
+
+            </div>
+            <div class="description">
+                <%= post.body.slice(0, 220) + '...' %>
+            </div>
+
+        </div>
+        <% }) %>
+</div>
+
+
+<div class="pagination" style="display: flex; justify-content: flex-end; margin-top: 20px; font-size: 0.875rem;">
+    <% if (pagination.current > 1) { %>
+        <a href="?search=<%= search %>&page=<%= pagination.current - 1 %>" style="margin-right: 10px;">Previous</a>
+    <% } %>
+    <% for (let i = 1; i <= pagination.total; i++) { %>
+        <a href="?search=<%= search %>&page=<%= i %>" style="margin: 0 5px; <%= i === pagination.current ? 'font-weight: bold;' : '' %>"><%= i %></a>
+    <% } %>
+    <% if (pagination.current < pagination.total) { %>
+        <a href="?search=<%= search %>&page=<%= pagination.current + 1 %>" style="margin-left: 10px;">Next</a>
+    <% } %>
+</div>
+
+<script>
+    function search() {
+        const query = document.querySelector('input[type="text"]').value;
+        window.location.href = `?search=${encodeURIComponent(query)}`;
+    }
+
+</script>
