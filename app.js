@@ -65,6 +65,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session()); // Persist user sessions
 
+// app.use(flash());
 
 // Global variables for flash messages
 app.use((req, res, next) => {
@@ -85,8 +86,13 @@ app.set('view engine', 'ejs');
 app.locals.isActiveRoute = isActiveRoute; 
 
 // Routes
+
 app.use('/', require('./server/routes/main'));
 app.use('/', require('./server/routes/admin'));
+
+app.use((req, res, next) => {
+  res.status(404).render('404',{ layout: false }); // Renders the 404.ejs file
+});
 
 // Start the server
 app.listen(PORT, () => {
