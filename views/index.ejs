@@ -22,6 +22,8 @@
     <% }) %>
   </ul>
 
-<button class="add-btn"><a class="add-btn"href="/add-post">+</a></button>
+<% if (locals.user?.admin) { %>
+  <button class="add-btn"><a class="add-btn" href="/add-post">+</a></button>
+<% } %>
  
 </section>

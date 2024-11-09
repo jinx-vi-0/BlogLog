@@ -1,15 +1,19 @@
 const express = require('express');
+const passport = require('passport');
+
 const router = express.Router();
+
 const Post = require('../models/Post');
+const User = require('../models/User');
 const ContactMessage = require('../models/contactMessage');
+
 const transporter = require('../config/nodemailerConfig');
-const { validateContact } = require('../validations/authValidator');
+const { validateContact, validateRegistration } = require('../middlewares/authValidator');
 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET;
 
-/**
- * GET /
- * HOME
-*/
 
 router.use((req, res, next) => {
   res.locals.layout = './layouts/main'; // Set the layout for the response
@@ -21,7 +25,7 @@ router.get('/posts', async (req, res) => {
   try {
     const locals = {
       title: "All Posts",
-      user: req.cookies.token,
+      user: req.cookies.user,
       description: "Made with ❤️"
     };
 
@@ -29,10 +33,10 @@ router.get('/posts', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
 
     let query = {};
-    
+
     if (req.query.search) {
       const searchNoSpecialChar = req.query.search.replace(/[^a-zA-Z0-9 ]/g, "");
-      
+
       query = {
         $or: [
           { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
@@ -70,16 +74,15 @@ router.get('/', async (req, res) => {
   try {
     const locals = {
       title: "BlogLog",
-      user : req.cookies.token,
+      user: req.cookies.user,
       description: "Made with ❤️"
     }
 
+    const data = await Post.aggregate([{ $sort: { createdAt: -1 } }])
+      .limit(5)
+      .exec();
 
-    const data = await Post.aggregate([ { $sort: { createdAt: -1 } } ])
-    .limit(5)
-    .exec();
-
-    res.render('index', { 
+    res.render('index', {
       locals,
       data,
       currentRoute: '/'
@@ -90,21 +93,6 @@ router.get('/', async (req, res) => {
   }
 
 });
-
-// router.get('', async (req, res) => {
-//   const locals = {
-//     title: "NodeJs Blog",
-//     description: "Simple Blog created with NodeJs, Express & MongoDb."
-//   }
-
-//   try {
-//     const data = await Post.find();
-//     res.render('index', { locals, data });
-//   } catch (error) {
-//     console.log(error);
-//   }
-
-// });
 
 
 /**
@@ -119,11 +107,11 @@ router.get('/post/:id', async (req, res) => {
 
     const locals = {
       title: data.title,
-      user : req.cookies.token,
+      user: req.cookies.user,
       description: "Simple Blog created with NodeJs, Express & MongoDb.",
     }
 
-    res.render('post', { 
+    res.render('post', {
       locals,
       data,
       currentRoute: `/post/${slug}`
@@ -152,24 +140,25 @@ router.get('/about', (req, res) => {
 */
 router.get('/contact', (req, res) => {
   res.render('contact', {
-    user : req.cookies.token,
+    user: req.cookies.token,
     currentRoute: '/contact'
   });
 });
 
-router.post('/send-message',validateContact ,async (req, res) => {
+router.post('/send-message', validateContact, async (req, res) => {
   const { name, email, message } = req.body;
 
-  try {``
+  try {
+    ``
     // Create a new contact message
     const newMessage = new ContactMessage({ name, email, message });
     await newMessage.save();
 
-     // Send an email notification
-     const mailOptions = {
-      from: `"BlogLog Contact Form" <${email}>`, 
-      to: process.env.EMAIL_USERNAME, 
-      subject: `New Contact Message from ${name} - BlogLog`, 
+    // Send an email notification
+    const mailOptions = {
+      from: `"BlogLog Contact Form" <${email}>`,
+      to: process.env.EMAIL_USERNAME,
+      subject: `New Contact Message from ${name} - BlogLog`,
       html: `
         <div style="font-family: Arial, sans-serif; margin: 20px; padding: 20px; border: 1px solid #eaeaea; border-radius: 5px; background-color: #f9f9f9;">
           <h2 style="color: #333;">New Contact Message from BlogLog</h2>
@@ -182,7 +171,7 @@ router.post('/send-message',validateContact ,async (req, res) => {
         </div>
       `,
     }
-    await transporter.sendMail(mailOptions); 
+    await transporter.sendMail(mailOptions);
 
     // Render the contact page with a success message
     res.render('contact', {
@@ -196,6 +185,131 @@ router.post('/send-message',validateContact ,async (req, res) => {
       message: 'There was an error sending your message. Please try again later.',
     });
   }
+});
+
+
+/* Authentication */
+
+router.get('/login', async (req, res) => {
+  try {
+    const locals = {
+      title: 'Login',
+      description: 'Simple Blog created with NodeJs, Express & MongoDb.',
+    };
+
+    res.render('login', { locals, currentRoute: '/login' });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post('/login', async (req, res, next) => {
+  passport.authenticate('local', async (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+    req.logIn(user, async (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error logging in' });
+      }
+
+      const data = {
+        id: user._id,
+        username: user.username,
+        admin: process.env.ADMIN_USERNAME.split(",").some(x => x === user.username),
+      }
+
+      const token = jwt.sign(data, jwtSecret, { expiresIn: '1h' });
+      res.cookie('user', Object.assign(data, { token }))
+
+      return res.redirect('/');
+    });
+  })(req, res, next);
+});
+
+
+router.get('/register', (req, res) => {
+  // Initialize messages object, you can adjust it according to your error handling logic
+  const locals = {
+    title: 'Admin',
+    description: 'Simple Blog created with NodeJs, Express & MongoDb.',
+  };
+
+  res.render('register', { locals, currentRoute: '/register' });
+});
+
+
+
+router.post('/register', validateRegistration, async (req, res) => {
+  const { username, password } = req.body;
+
+  // Simple validation
+  if (!username || !password) {
+    req.flash('error', 'All fields are required');
+    return res.redirect('/register'); // Change to '/register'
+  }
+
+  if (!/^[a-zA-Z0-9]+$/.test(username) || username.length < 3) {
+    req.flash('error', 'Username must be at least 3 characters long and contain only alphanumeric characters.');
+    return res.redirect('/register');
+  }
+
+  if (password.length < 8 || !/\d/.test(password) || !/[!@#$%^&*]/.test(password)) {
+    req.flash('error', 'Password must be at least 8 characters long, contain a number, and a special character.');
+    return res.redirect('/register');
+  }
+
+  try {
+    const existingUser = await User.findOne({ username });
+
+    if (existingUser) {
+      req.flash('error', 'Username already taken');
+      return res.redirect('/register'); // Change to '/register'
+    }
+
+    // Hash password and create new user
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ username, password: hashedPassword });
+    await user.save();
+
+    // Automatically log the user in
+    req.login(user, (err) => {
+      if (err) return res.status(500).json({ message: 'Error logging in after registration' });
+
+      const data = {
+        id: user._id,
+        username: user.username,
+        admin: process.env.ADMIN_USERNAME.split(",").some(x => x === user.username),
+      }
+
+      const token = jwt.sign(data, jwtSecret, { expiresIn: '1h' });
+      res.cookie('user', Object.assign(data, { token }), { httpOnly: true });
+
+      return res.redirect('/');
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+/**
+ * GET /logout
+ * Admin Logout Route
+ */
+router.get('/logout', (req, res) => {
+
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.clearCookie('user');
+    res.redirect('/');
+  });
 });
 
 // function insertPostData() {
