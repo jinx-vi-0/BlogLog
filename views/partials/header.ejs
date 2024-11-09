@@ -13,7 +13,11 @@
         <a href="/contact" class="<%= isActiveRoute('/contact', currentRoute) %>">Contact</a>
       </li>
     <li>
-        <a href="/add-post" class="<%= isActiveRoute('/admin', currentRoute) %>">Post</a>
+        <% if(locals.user?.admin) { %>
+          <a href="/add-post" class="<%= isActiveRoute('/add-post', currentRoute) %>">Post</a>
+        <% }  else { %>
+          <a href="/posts" class="<%= isActiveRoute('/posts', currentRoute) %>">Posts</a>
+        <% } %>
       </li>
     </ul>
 
@@ -24,7 +28,7 @@
       <% if (locals.user) { %>
         <button id="LogIn"><a style="text-decoration: none;" href="/logout">Log Out</a></button>
       <% } else { %>
-        <button id="LogIn" onclick="window.location.href = '/admin'">Log In</button>
+        <button id="LogIn" onclick="window.location.href = '/login'">Log In</button>
       <% } %>
       
        <!-- Dark Mode Toggle Button -->

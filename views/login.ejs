@@ -1,0 +1,45 @@
+<h3>Sign In</h3>
+
+<form action="/login" method="POST"> <!-- Change action to /admin if using Passport.js -->
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+
+    <label for="password"><b>Password</b></label>
+
+    <div style="display: flex; flex-direction: row; gap: 2px;">
+        <input id="password" type="password" placeholder="Enter Password" name="password">
+        <a type="button" id="togglepasswordView"
+            style="position: absolute; right: 10rem; padding-top: 11px; cursor: pointer;"><i
+                class="fa-solid fa-eye"></i></a>
+    </div>
+
+    <input type="submit" value="Login" class="btn">
+    <br>
+    Don't have an account? <a href="/register">Sign up</a>
+</form>
+
+<!-- <h3>Register</h3>
+<form action="/register" method="POST">
+
+  <label for="username"><b>Username</b></label>
+  <input type="text" placeholder="Enter Username" name="username">
+
+  <label for="password"><b>Password</b></label>
+  <input type="password" placeholder="Enter Password" name="password">
+
+  <input type="submit" value="Register" class="btn">
+
+</form> -->
+
+<script>
+    const setPasswordButton = document.getElementById('togglepasswordView');
+    const passwordfeild = document.getElementById('password');
+    setPasswordButton.addEventListener('click', () => {
+        // console.log("clicked 🔑")
+        const type = passwordfeild.getAttribute('type') === 'password' ? 'text' : 'password'
+        passwordfeild.setAttribute("type", type)
+
+        setPasswordButton.innerHTML = type === 'text' ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>'
+
+    })
+</script>

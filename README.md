@@ -51,6 +51,8 @@ npm install
 
 Create a `.env` file in the root directory and add the following line:
 ```bash
+ADMIN_USERNAME=username of admins seprarated by ","
+
 MONGODB_URI=mongodb://localhost:27017/bloglog
 EMAIL_USERNAME=
 EMAIL_APP_PASSWORD=
