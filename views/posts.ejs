@@ -33,6 +33,24 @@
         color: var(--gray);
         margin-bottom: 10px;
     }
+
+    .tag-container {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 50px;
+    }
+
+
+    .tag {
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: white;
+    }
 </style>
 
 
@@ -49,6 +67,57 @@
         </svg>
     </div>
 </div>
+
+<div class="tag-container" id="selectedTags" style="justify-content: flex-end;">
+    <% tags.forEach(tag=> { %>
+        <span class="tag" style="background-color: black; cursor: pointer;"
+            onclick="handleTagClick('<%= tag._id %>', this)">
+            <span class="tick" style="display: none;">✓</span>
+            <%= tag.name %>
+        </span>
+        <% }) %>
+</div>
+
+<script>
+    let selectedTagIds = [];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const tagParam = urlParams.get('tags');
+
+    if (tagParam) {
+        selectedTagIds = tagParam.split(',');
+        // Update UI for pre-selected tags
+        selectedTagIds.forEach(tagId => {
+            const tagElement = document.querySelector(`[onclick*="${tagId}"]`);
+            if (tagElement) {
+                tagElement.style.backgroundColor = '#444';
+                tagElement.querySelector('.tick').style.display = 'inline';
+            }
+        });
+    }
+
+    function handleTagClick(tagId, element) {
+        const index = selectedTagIds.indexOf(tagId);
+        const tick = element.querySelector('.tick');
+
+        if (index === -1) {
+            selectedTagIds.push(tagId);
+            element.style.backgroundColor = '#444';
+            tick.style.display = 'inline';
+        } else {
+            selectedTagIds.splice(index, 1);
+            element.style.backgroundColor = 'black';
+            tick.style.display = 'none';
+        }
+
+        // Redirect to /posts with selected tags
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('tags', selectedTagIds.join(','));
+        window.location.href = `/posts?${urlParams.toString()}`;
+    }
+</script>
+
+
 
 <div class="posts">
     <% data.forEach(post=> { %>
@@ -69,15 +138,19 @@
 
 
 <div class="pagination" style="display: flex; justify-content: flex-end; margin-top: 20px; font-size: 0.875rem;">
-    <% if (pagination.current > 1) { %>
+    <% if (pagination.current> 1) { %>
         <a href="?search=<%= search %>&page=<%= pagination.current - 1 %>" style="margin-right: 10px;">Previous</a>
-    <% } %>
-    <% for (let i = 1; i <= pagination.total; i++) { %>
-        <a href="?search=<%= search %>&page=<%= i %>" style="margin: 0 5px; <%= i === pagination.current ? 'font-weight: bold;' : '' %>"><%= i %></a>
-    <% } %>
-    <% if (pagination.current < pagination.total) { %>
-        <a href="?search=<%= search %>&page=<%= pagination.current + 1 %>" style="margin-left: 10px;">Next</a>
-    <% } %>
+        <% } %>
+            <% for (let i=1; i <=pagination.total; i++) { %>
+                <a href="?search=<%= search %>&page=<%= i %>"
+                    style="margin: 0 5px; <%= i === pagination.current ? 'font-weight: bold;' : '' %>">
+                    <%= i %>
+                </a>
+                <% } %>
+                    <% if (pagination.current < pagination.total) { %>
+                        <a href="?search=<%= search %>&page=<%= pagination.current + 1 %>"
+                            style="margin-left: 10px;">Next</a>
+                        <% } %>
 </div>
 
 <script>

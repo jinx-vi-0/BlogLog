@@ -5,6 +5,7 @@ const router = express.Router();
 
 const Post = require('../models/Post');
 const User = require('../models/User');
+const Tag = require('../models/Tag');
 const ContactMessage = require('../models/contactMessage');
 
 const transporter = require('../config/nodemailerConfig');
@@ -12,6 +13,8 @@ const { validateContact, validateRegistration } = require('../middlewares/authVa
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { Types: { ObjectId } } = require('mongoose')
+
 const jwtSecret = process.env.JWT_SECRET;
 
 
@@ -45,6 +48,14 @@ router.get('/posts', async (req, res) => {
       }
     }
 
+
+    if (req.query.tags) {
+      const tagIds = req.query.tags.split(',').map(id => new ObjectId(id));
+      query.tags = { $in: tagIds };
+    }
+
+    console.log(query.tags)
+
     const data = await Post.aggregate([
       { $match: query },
       { $sort: { createdAt: -1 } },
@@ -52,11 +63,14 @@ router.get('/posts', async (req, res) => {
       { $limit: perPage }
     ]).exec()
 
+    const tags = await Tag.find()
+
     const count = await Post.countDocuments(query);
 
     res.render('posts', {
       locals,
       data,
+      tags,
       currentRoute: 'posts',
       search: req.query.search,
       pagination: {
@@ -103,7 +117,7 @@ router.get('/post/:id', async (req, res) => {
   try {
     let slug = req.params.id;
 
-    const data = await Post.findById({ _id: slug });
+    const data = await Post.findById({ _id: slug }).populate('tags');
 
     const locals = {
       title: data.title,

@@ -4,16 +4,49 @@
         border-radius: 10px;
     }
 
-    .article h1, h2, h3, h4, p, ul, ol {
+    .article h1,
+    h2,
+    h3,
+    h4,
+    p,
+    ul,
+    ol {
         margin: 0
+    }
+
+    
+    .tag-container {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+    }
+
+    
+    .tag {
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: white;
     }
 </style>
 
 <!-- HTML structure -->
 <img class="poster" src="<%= data.poster %>" />
-<h1>
-    <%= data.title %>
-</h1>
+
+<div class="display:flex; flex-direction: column">
+    <h1 style="margin: 0"><%= data.title %></h1>
+    <div class="tag-container" id="selectedTags">
+        <% data.tags.forEach(tag => { %>
+        <span class="tag" style="background-color: <%= tag.color %>;"><%= tag.name %></span>
+        <% }) %>
+    </div>
+</div>
+
+
 <div class="article">
     <%= data.body %>
 </div>
