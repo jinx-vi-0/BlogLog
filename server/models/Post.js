@@ -18,6 +18,12 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
+  tags: {
+    type: [Schema.Types.ObjectId],
+    ref: 'Tag',
+    required: false,
+    default: []
+  },
   createdAt: {
     type: Date,
     default: Date.now

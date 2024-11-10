@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
+const Tag = require('../models/Tag')
 
 const { validatePost } = require('../middlewares/authValidator');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
@@ -61,6 +62,26 @@ router.get('/dashboard', authMiddleware, adminMiddleware, async (req, res) => {
   res.render('admin/dashboard', { locals, posts });
 });
 
+router.get('/create-tag', authMiddleware, adminMiddleware, async (req, res) => {
+  const { name, description, color } = req.query;
+  const newTag = new Tag({ name, description, color });
+  await Tag.create(newTag);
+  res.redirect('/tags');
+})
+
+
+router.get('/tags', authMiddleware, adminMiddleware, async (req, res) => {
+  const locals = {
+    title: 'Tags',
+    user: req.cookies.token,
+    description: 'Simple Blog created with NodeJs, Express & MongoDb.',
+  };
+
+  const tags = await Tag.find()
+
+  res.render('admin/tags', { locals, tags });
+})
+
 
 /**
  * GET /add-post
@@ -76,7 +97,9 @@ router.get('/add-post', authMiddleware, adminMiddleware, async (req, res) => {
       description: 'Simple Blog created with NodeJs, Express & MongoDb.',
     };
 
-    res.render('admin/add-post', {locals, layout: adminLayout });
+    const tags = await Tag.find()
+
+    res.render('admin/add-post', { locals, layout: adminLayout, tags });
   } catch (error) {
     console.log(error);
   }
@@ -89,11 +112,13 @@ router.get('/add-post', authMiddleware, adminMiddleware, async (req, res) => {
 router.post('/add-post', upload.single('poster'), authMiddleware, adminMiddleware, validatePost, async (req, res) => {
   try {
     const token = req.cookies.token
+    const tags = await Tag.find({ _id: { $in: req.body.tags.split(',') } });
 
     const newPost = new Post({
       title: req.body.title,
       user: token,
       body: req.body.body,
+      tags: tags.map(x => x._id),
       author: req.body.author,
       poster: req.file ? await cloudinary.uploader.upload(req.file.path).then(r => r.secure_url) : null
     });
@@ -118,8 +143,9 @@ router.get('/edit-post/:id', authMiddleware, adminMiddleware, async (req, res) =
     };
 
     const data = await Post.findOne({ _id: req.params.id });
+    const tags = await Tag.find()
 
-    res.render('admin/edit-post', { locals, data, layout: adminLayout });
+    res.render('admin/edit-post', { locals, data, layout: adminLayout, tags });
   } catch (error) {
     console.log(error);
   }
@@ -130,11 +156,14 @@ router.get('/edit-post/:id', authMiddleware, adminMiddleware, async (req, res) =
  * Admin Update Post Route
  */
 router.put('/edit-post/:id', upload.single('poster'), authMiddleware, adminMiddleware, validatePost, async (req, res) => {
+  const tags = await Tag.find({ _id: { $in: req.body.tags.split(',') } });
+
   try {
     await Post.findByIdAndUpdate(req.params.id, {
       title: req.body.title,
       body: req.body.body,
       author: req.body.author,
+      tags: tags.map(x => x._id),
       ...(req.file ? { poster: await cloudinary.uploader.upload(req.file.path).then(r => r.secure_url) } : {}),
       updatedAt: Date.now(),
     });
@@ -157,6 +186,18 @@ router.delete('/delete-post/:id', authMiddleware, adminMiddleware, async (req, r
     console.log(error);
   }
 });
+
+/**
+ * DELETE /delete-tag/:id
+ */
+router.delete('/delete-tag/:id', authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    await Tag.deleteOne({ _id: req.params.id });
+    res.redirect('/tags');
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 
 module.exports = router;

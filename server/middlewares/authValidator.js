@@ -1,4 +1,5 @@
 const { body, validationResult } = require('express-validator');
+const Tag = require('../models/Tag');
 
 // Validation middleware for registration
 const validateRegistration = [
@@ -52,11 +53,11 @@ const validatePost = [
     .withMessage('Author name is required')
     .escape(),
 
-  (req, res, next) => {
+  async (req, res, next) => {
     console.log(req.body)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.render('admin/add-post', {message: errors });
+      res.render('admin/add-post', { message: errors, tags: await Tag.find() });
     } else next();
   }
 ];
